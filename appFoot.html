@@ -1,0 +1,1065 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+<title>Jeunes Foot Martinique</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:wght@400;500;600;700;800&family=Barlow+Condensed:wght@600;700;800&display=swap" rel="stylesheet"/>
+<style>
+:root{
+  --red:#E8002D;--red-dark:#B5001F;--red-light:#FF1A44;
+  --green:#00843D;--green-dark:#005C2A;--green-light:#00A84E;
+  --black:#0A0A0A;--dark:#111111;--dark2:#1A1A1A;--dark3:#232323;
+  --gray:#888;--gray-light:#CCC;--white:#FFF;--gold:#FFD700;
+  --card:#161616;--border:rgba(255,255,255,0.08);
+}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{height:100%;overflow:hidden;background:var(--black);color:var(--white);font-family:'Barlow',sans-serif}
+
+/* ─── APP SHELL ─── */
+#app{
+  max-width:430px;margin:0 auto;height:100vh;
+  display:flex;flex-direction:column;
+  background:var(--black);position:relative;overflow:hidden;
+}
+
+/* ─── SPLASH ─── */
+#splash{
+  position:fixed;inset:0;z-index:9999;
+  background:var(--black);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  animation:splashOut .5s ease 2.8s forwards;
+}
+@keyframes splashOut{to{opacity:0;pointer-events:none}}
+.splash-stripe-top{position:absolute;top:0;width:100%;height:6px;background:linear-gradient(90deg,var(--red) 33%,var(--black) 33% 66%,var(--green) 66%)}
+.splash-stripe-bot{position:absolute;bottom:0;width:100%;height:6px;background:linear-gradient(90deg,var(--green) 33%,var(--black) 33% 66%,var(--red) 66%)}
+.splash-ring{
+  width:150px;height:150px;border-radius:50%;
+  background:conic-gradient(var(--red) 0 120deg,var(--black) 120deg 240deg,var(--green) 240deg 360deg);
+  display:flex;align-items:center;justify-content:center;
+  animation:spinIn .9s cubic-bezier(.34,1.56,.64,1) .1s both;
+  box-shadow:0 0 70px rgba(232,0,45,.45),0 0 140px rgba(0,132,61,.2);
+}
+@keyframes spinIn{from{transform:scale(0) rotate(-180deg);opacity:0}to{transform:scale(1) rotate(0);opacity:1}}
+.splash-inner{
+  width:128px;height:128px;border-radius:50%;
+  background:var(--black);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;
+}
+.splash-ball{font-size:38px;animation:ballBounce .6s ease 1.1s infinite alternate}
+@keyframes ballBounce{from{transform:translateY(0)}to{transform:translateY(-7px)}}
+.splash-wordmark{font-family:'Bebas Neue',sans-serif;font-size:11px;letter-spacing:2px;color:var(--white);text-align:center;line-height:1.1}
+.splash-name{
+  font-family:'Bebas Neue',sans-serif;font-size:34px;letter-spacing:4px;
+  background:linear-gradient(135deg,var(--red),var(--gold));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  animation:slideUp .6s ease .9s both;text-align:center;margin-top:26px;
+}
+.splash-sub{font-size:13px;color:var(--gray);letter-spacing:2px;text-transform:uppercase;animation:slideUp .6s ease 1.1s both;margin-top:6px}
+@keyframes slideUp{from{transform:translateY(22px);opacity:0}to{transform:translateY(0);opacity:1}}
+.splash-loader{width:200px;height:3px;background:var(--dark3);border-radius:2px;margin-top:44px;overflow:hidden}
+.splash-loader-fill{height:100%;background:linear-gradient(90deg,var(--red),var(--green));animation:loadFill 2.4s ease .4s both;border-radius:2px}
+@keyframes loadFill{from{width:0}to{width:100%}}
+
+/* ─── HEADER ─── */
+#header{
+  flex-shrink:0;
+  background:rgba(10,10,10,.95);backdrop-filter:blur(20px);
+  border-bottom:1px solid var(--border);
+  padding:11px 16px;
+  display:flex;align-items:center;gap:10px;
+  position:relative;z-index:50;
+}
+.hdr-logo{
+  width:36px;height:36px;border-radius:50%;flex-shrink:0;
+  background:conic-gradient(var(--red) 0 120deg,var(--black) 120deg 240deg,var(--green) 240deg 360deg);
+  display:flex;align-items:center;justify-content:center;font-size:16px;
+}
+.hdr-title{
+  flex:1;font-family:'Bebas Neue',sans-serif;font-size:20px;letter-spacing:2.5px;
+  background:linear-gradient(90deg,var(--white),var(--gray-light));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+}
+.hdr-notif{
+  width:36px;height:36px;border-radius:10px;
+  background:var(--dark3);border:1px solid var(--border);
+  display:flex;align-items:center;justify-content:center;font-size:16px;
+  cursor:pointer;position:relative;flex-shrink:0;
+}
+.notif-dot{position:absolute;top:7px;right:7px;width:8px;height:8px;border-radius:50%;background:var(--red);border:2px solid var(--black)}
+
+/* ─── MAIN CONTENT ─── */
+#main{flex:1;overflow-y:auto;overflow-x:hidden;scroll-behavior:smooth}
+#main::-webkit-scrollbar{display:none}
+
+/* ─── BOTTOM NAV ─── */
+#bottom-nav{
+  flex-shrink:0;
+  background:rgba(10,10,10,.97);backdrop-filter:blur(20px);
+  border-top:1px solid var(--border);
+  display:flex;padding:8px 0 20px;
+  position:relative;z-index:50;
+}
+.nav-item{
+  flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;
+  cursor:pointer;padding:6px 0;position:relative;
+  transition:transform .15s;
+}
+.nav-item:active{transform:scale(.92)}
+.nav-icon{font-size:20px;transition:transform .2s}
+.nav-label{font-size:10px;font-weight:600;letter-spacing:.5px;color:var(--gray);text-transform:uppercase;transition:color .2s}
+.nav-item.active .nav-label{color:var(--red)}
+.nav-item.active .nav-icon{transform:scale(1.15)}
+.nav-bar{position:absolute;top:0;width:24px;height:3px;background:var(--red);border-radius:2px;display:none}
+.nav-item.active .nav-bar{display:block}
+
+/* ─── SCREENS ─── */
+.screen{display:none;animation:fadeIn .25s ease}
+.screen.active{display:block}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+
+/* ─── HERO ─── */
+.hero{
+  position:relative;height:230px;overflow:hidden;
+  background:linear-gradient(135deg,#0A0A0A 0%,#1A0505 30%,#050A05 70%,#0A0A0A 100%);
+}
+.hero-glow{
+  position:absolute;inset:0;
+  background:radial-gradient(circle at 20% 50%,rgba(232,0,45,.15) 0%,transparent 50%),
+             radial-gradient(circle at 80% 30%,rgba(0,132,61,.12) 0%,transparent 50%);
+}
+.hero-grid{
+  position:absolute;inset:0;opacity:.04;
+  background-image:linear-gradient(var(--white) 1px,transparent 1px),linear-gradient(90deg,var(--white) 1px,transparent 1px);
+  background-size:40px 40px;
+}
+.hero-content{position:relative;z-index:2;padding:28px 20px 0;height:100%}
+.hero-badge{
+  display:inline-flex;align-items:center;gap:6px;
+  background:rgba(232,0,45,.15);border:1px solid rgba(232,0,45,.3);
+  border-radius:20px;padding:4px 12px;
+  font-size:11px;font-weight:700;color:var(--red);
+  letter-spacing:1px;text-transform:uppercase;margin-bottom:12px;
+}
+.live-dot{width:6px;height:6px;border-radius:50%;background:var(--red);animation:pulse 1s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+.hero-title{font-family:'Bebas Neue',sans-serif;font-size:44px;line-height:.93;letter-spacing:1px}
+.hero-title span{color:var(--green-light)}
+.hero-sub{font-size:13px;color:var(--gray);margin-top:8px;font-weight:500}
+.hero-player{position:absolute;right:16px;bottom:0;font-size:110px;line-height:1;opacity:.7;filter:drop-shadow(0 0 25px rgba(232,0,45,.35))}
+
+/* ─── SECTION ─── */
+.section{padding:20px 16px 0}
+.section-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
+.section-title{font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:800;text-transform:uppercase;letter-spacing:1px}
+.sec-line{display:inline-block;width:3px;height:18px;background:var(--red);border-radius:2px;margin-right:8px;vertical-align:middle}
+.see-all{font-size:12px;font-weight:700;color:var(--green-light);text-transform:uppercase;letter-spacing:1px;cursor:pointer;background:none;border:none;color:var(--green-light)}
+
+/* ─── STAT STRIP ─── */
+.stat-strip{display:flex;gap:1px;margin:16px 16px 0;border-radius:10px;overflow:hidden}
+.ssi{flex:1;background:var(--dark3);padding:10px 8px;text-align:center}
+.ssi-val{font-family:'Bebas Neue',sans-serif;font-size:22px;color:var(--red);line-height:1}
+.ssi-lbl{font-size:10px;color:var(--gray);font-weight:600;text-transform:uppercase;letter-spacing:.5px}
+
+/* ─── CAT GRID ─── */
+.cat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;padding:0 16px}
+.cat-card{
+  background:var(--card);border:1px solid var(--border);border-radius:14px;
+  padding:14px 8px;text-align:center;cursor:pointer;transition:all .2s;
+  position:relative;overflow:hidden;
+}
+.cat-card::after{content:'';position:absolute;bottom:0;left:0;right:0;height:3px;background:var(--red);transform:scaleX(0);transition:transform .2s}
+.cat-card:active::after{transform:scaleX(1)}
+.cat-card:active{border-color:rgba(232,0,45,.4);background:rgba(232,0,45,.08)}
+.cat-emoji{font-size:22px;margin-bottom:6px}
+.cat-label{font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:1px}
+.cat-sub{font-size:10px;color:var(--gray);font-weight:600}
+
+/* ─── MATCH CARD ─── */
+.match-card{
+  background:var(--card);border:1px solid var(--border);border-radius:16px;
+  padding:14px 16px;margin-bottom:10px;cursor:pointer;transition:all .2s;
+}
+.match-card:active{transform:scale(.98)}
+.mc-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+.mc-meta{display:flex;gap:6px}
+.badge{font-size:10px;font-weight:700;padding:3px 8px;border-radius:20px;text-transform:uppercase;letter-spacing:.5px}
+.b-cat{background:rgba(0,132,61,.2);color:var(--green-light)}
+.b-done{background:rgba(255,255,255,.08);color:var(--gray)}
+.b-soon{background:rgba(255,215,0,.15);color:var(--gold)}
+.mc-date{font-size:11px;color:var(--gray)}
+.mc-teams{display:flex;align-items:center;gap:8px}
+.team-side{flex:1;display:flex;align-items:center;gap:8px}
+.team-side.away{flex-direction:row-reverse}
+.team-logo{width:34px;height:34px;border-radius:50%;background:var(--dark3);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0}
+.team-name{font-size:12px;font-weight:700;line-height:1.2}
+.team-side.away .team-name{text-align:right}
+.score-box{background:var(--dark3);border:1px solid var(--border);border-radius:10px;padding:6px 14px;text-align:center;min-width:72px;flex-shrink:0}
+.score-num{font-family:'Bebas Neue',sans-serif;font-size:24px;letter-spacing:2px;line-height:1}
+.score-vs{font-size:12px;color:var(--gray);font-weight:700}
+.mc-venue{font-size:11px;color:var(--gray);margin-top:8px}
+
+/* ─── NEWS CARD ─── */
+.news-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:16px;margin-bottom:10px;cursor:pointer;transition:all .2s;display:flex;gap:14px;align-items:flex-start}
+.news-card:active{transform:scale(.98)}
+.news-icon{width:52px;height:52px;border-radius:12px;background:rgba(232,0,45,.1);border:1px solid rgba(232,0,45,.2);display:flex;align-items:center;justify-content:center;font-size:24px;flex-shrink:0}
+.news-body{flex:1;min-width:0}
+.news-cat{font-size:10px;font-weight:700;color:var(--green-light);text-transform:uppercase;letter-spacing:1px;margin-bottom:4px}
+.news-title{font-size:14px;font-weight:700;line-height:1.3;margin-bottom:4px}
+.news-date{font-size:11px;color:var(--gray)}
+
+/* ─── PLAYER CARD ─── */
+.player-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:16px;margin-bottom:10px;display:flex;align-items:center;gap:14px;cursor:pointer;transition:all .2s}
+.player-card:active{transform:scale(.98)}
+.player-av{width:54px;height:54px;border-radius:50%;background:linear-gradient(135deg,var(--red-dark),var(--green-dark));display:flex;align-items:center;justify-content:center;font-size:26px;flex-shrink:0;border:2px solid rgba(232,0,45,.3);position:relative}
+.pos-badge{position:absolute;bottom:-2px;right:-2px;background:var(--red);border-radius:4px;padding:1px 4px;font-size:8px;font-weight:800;letter-spacing:.5px;border:1px solid var(--black);color:var(--white)}
+.player-info{flex:1}
+.player-name{font-size:15px;font-weight:800;margin-bottom:3px}
+.player-club{font-size:12px;color:var(--gray);margin-bottom:6px}
+.player-stats{display:flex;gap:14px}
+.pst{text-align:center}
+.pst-val{font-family:'Bebas Neue',sans-serif;font-size:18px;line-height:1}
+.pst-lbl{font-size:10px;color:var(--gray);font-weight:600}
+
+/* ─── TOURNAMENT CARD ─── */
+.tourn-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:18px;margin-bottom:10px;position:relative;overflow:hidden}
+.tourn-card::before{content:'';position:absolute;left:0;top:0;bottom:0;width:4px;background:linear-gradient(180deg,var(--red),var(--green))}
+.tourn-name{font-size:16px;font-weight:800;margin-bottom:8px}
+.tmeta{font-size:12px;color:var(--gray);display:flex;align-items:center;gap:6px;margin-bottom:4px}
+.tourn-cats{display:flex;gap:6px;margin-top:10px;flex-wrap:wrap}
+.status{display:inline-block;padding:4px 10px;border-radius:20px;font-size:11px;font-weight:700;margin-top:10px}
+.s-open{background:rgba(0,132,61,.2);color:var(--green-light)}
+.s-soon{background:rgba(255,215,0,.15);color:var(--gold)}
+
+/* ─── SPONSOR ─── */
+.sponsor-card{background:linear-gradient(135deg,var(--dark2),var(--dark3));border:1px solid var(--border);border-radius:16px;padding:16px;margin-bottom:10px;text-align:center;position:relative;overflow:hidden}
+.sponsor-card::before{content:'SPONSORISÉ';position:absolute;top:6px;right:10px;font-size:8px;color:var(--gray);letter-spacing:1px;font-weight:700}
+.sp-logo{font-size:32px;margin-bottom:6px}
+.sp-name{font-size:16px;font-weight:800;margin-bottom:4px}
+.sp-tag{font-size:12px;color:var(--gray)}
+.sp-cta{display:inline-block;margin-top:10px;padding:8px 20px;border-radius:20px;background:var(--red);color:var(--white);font-size:12px;font-weight:700;cursor:pointer}
+
+/* ─── TABS ─── */
+.tabs{display:flex;padding:12px 16px;gap:6px;overflow-x:auto;scrollbar-width:none}
+.tabs::-webkit-scrollbar{display:none}
+.tab{flex-shrink:0;padding:8px 16px;border-radius:20px;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;cursor:pointer;border:1px solid var(--border);background:var(--dark2);color:var(--gray);transition:all .2s;white-space:nowrap}
+.tab.active{background:var(--red);color:var(--white);border-color:var(--red)}
+
+/* ─── SELECTORS ─── */
+.selector-row{display:flex;gap:8px;padding:12px 16px 0;overflow-x:auto;scrollbar-width:none}
+.selector-row::-webkit-scrollbar{display:none}
+.chip{flex-shrink:0;padding:8px 16px;border-radius:20px;font-size:13px;font-weight:700;cursor:pointer;border:1px solid var(--border);background:var(--dark2);color:var(--gray);transition:all .2s;white-space:nowrap}
+.chip.active{background:rgba(0,132,61,.2);border-color:var(--green);color:var(--green-light)}
+
+/* ─── STANDINGS ─── */
+.standings-wrap{background:var(--card);border:1px solid var(--border);border-radius:16px;overflow:hidden;margin:0 16px}
+table{width:100%;border-collapse:collapse}
+thead th{font-size:10px;font-weight:700;color:var(--gray);text-transform:uppercase;letter-spacing:1px;padding:10px 6px;text-align:center;border-bottom:1px solid var(--border)}
+thead th:first-child{text-align:left;padding-left:14px;width:36px}
+thead th:nth-child(2){text-align:left}
+tbody td{padding:10px 6px;text-align:center;font-size:13px;border-bottom:1px solid rgba(255,255,255,.04);font-weight:500}
+tbody td:first-child{padding-left:14px}
+tbody td:nth-child(2){text-align:left}
+tbody tr:last-child td{border-bottom:none}
+.rank-num{width:22px;height:22px;border-radius:6px;display:inline-flex;align-items:center;justify-content:center;font-family:'Bebas Neue',sans-serif;font-size:14px;background:var(--dark3);color:var(--gray)}
+.r1{background:rgba(255,215,0,.2);color:var(--gold)}
+.r2{background:rgba(192,192,192,.2);color:#C0C0C0}
+.r3{background:rgba(205,127,50,.2);color:#CD7F32}
+.pts{background:rgba(0,132,61,.2);color:var(--green-light);border-radius:8px;padding:2px 8px;font-weight:800}
+.club-cell{display:flex;align-items:center;gap:8px}
+.club-logo-sm{font-size:16px}
+.club-cell-name{font-size:12px;font-weight:700}
+.club-cell-city{font-size:10px;color:var(--gray)}
+
+/* ─── SCORERS ─── */
+.scorers-wrap{background:var(--card);border:1px solid var(--border);border-radius:16px;overflow:hidden;margin:0 16px}
+.scorer-row{display:flex;align-items:center;gap:12px;padding:12px 16px;border-bottom:1px solid var(--border)}
+.scorer-row:last-child{border-bottom:none}
+.sc-rank{width:28px;height:28px;border-radius:8px;background:var(--dark3);display:flex;align-items:center;justify-content:center;font-family:'Bebas Neue',sans-serif;font-size:16px;color:var(--gray);flex-shrink:0}
+.sc-av{width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,var(--red-dark),var(--green-dark));display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+.sc-info{flex:1}
+.sc-name{font-size:14px;font-weight:700}
+.sc-club{font-size:11px;color:var(--gray);margin-top:2px}
+.sc-stat{font-family:'Bebas Neue',sans-serif;font-size:28px;display:flex;align-items:center;gap:4px}
+.sc-icon{font-size:14px}
+
+/* ─── MATCH DETAIL ─── */
+#match-detail{display:none;animation:fadeIn .25s ease}
+#match-detail.active{display:block}
+.md-header{background:linear-gradient(180deg,#1A0505 0%,var(--black) 100%);padding:20px 20px 24px}
+.md-cats{display:flex;gap:6px;margin-bottom:16px}
+.md-teams{display:flex;align-items:center;gap:12px}
+.team-block{flex:1;text-align:center}
+.tl-lg{width:60px;height:60px;border-radius:50%;background:var(--dark3);border:2px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:28px;margin:0 auto 8px}
+.tn-lg{font-size:13px;font-weight:700}
+.score-display{background:var(--dark3);border:1px solid var(--border);border-radius:16px;padding:12px 20px;text-align:center;flex-shrink:0}
+.sd-num{font-family:'Bebas Neue',sans-serif;font-size:40px;letter-spacing:4px;background:linear-gradient(135deg,var(--white),var(--gray-light));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.sd-lbl{font-size:10px;color:var(--gray);margin-top:2px}
+.md-info{background:var(--dark3);border-radius:12px;padding:12px 16px;margin:10px 16px;display:flex;align-items:center;gap:8px;font-size:12px;color:var(--gray)}
+.event-item{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--border)}
+.event-item:last-child{border-bottom:none}
+.ev-icon{font-size:18px;width:28px;text-align:center}
+.ev-player{font-size:13px;font-weight:700}
+.ev-time{font-size:11px;color:var(--gray)}
+.back-btn{display:flex;align-items:center;gap:8px;padding:14px 16px;cursor:pointer;font-size:14px;font-weight:700;color:var(--gray);border-bottom:1px solid var(--border)}
+.back-btn:active{background:var(--dark2)}
+
+/* ─── HIGHLIGHTS ─── */
+.hl-card{background:var(--card);border:1px solid var(--border);border-radius:16px;overflow:hidden;margin-bottom:10px;cursor:pointer}
+.hl-thumb{height:160px;background:linear-gradient(135deg,#1A0505 0%,#050A05 50%,#0A1A05 100%);display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden}
+.hl-glow{position:absolute;inset:0;background:radial-gradient(circle at 50% 50%,rgba(232,0,45,.1) 0%,transparent 70%)}
+.hl-emoji{position:absolute;font-size:90px;opacity:.15}
+.play-btn{width:56px;height:56px;border-radius:50%;background:rgba(232,0,45,.9);display:flex;align-items:center;justify-content:center;font-size:22px;z-index:1;box-shadow:0 0 30px rgba(232,0,45,.4)}
+.hl-info{padding:14px}
+.hl-title{font-size:14px;font-weight:700;margin-bottom:6px}
+.hl-meta{font-size:11px;color:var(--gray);display:flex;gap:12px}
+
+/* ─── ADMIN ─── */
+.admin-header-sec{background:linear-gradient(135deg,#1A0505,#050A05);padding:20px 16px;border-bottom:1px solid var(--border)}
+.admin-title{font-family:'Bebas Neue',sans-serif;font-size:28px;letter-spacing:2px;color:var(--red)}
+.admin-subtitle{font-size:13px;color:var(--gray)}
+.admin-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:16px}
+.admin-action{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:18px 14px;text-align:center;cursor:pointer;transition:all .2s}
+.admin-action:active{transform:scale(.96);border-color:rgba(232,0,45,.3)}
+.aa-icon{font-size:28px;margin-bottom:8px}
+.aa-label{font-size:13px;font-weight:700}
+.aa-sub{font-size:11px;color:var(--gray);margin-top:2px}
+
+/* ─── FORM ─── */
+.admin-form{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:20px;margin:0 16px 16px}
+.af-title{font-size:16px;font-weight:800;margin-bottom:16px;padding-bottom:12px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:8px}
+.form-group{margin-bottom:14px}
+.form-label{font-size:12px;font-weight:700;color:var(--gray);margin-bottom:6px;display:block;text-transform:uppercase;letter-spacing:.5px}
+.form-input{width:100%;background:var(--dark3);border:1px solid var(--border);border-radius:10px;padding:12px 14px;color:var(--white);font-size:14px;font-family:'Barlow',sans-serif;outline:none;transition:border-color .2s;-webkit-appearance:none;appearance:none}
+.form-input:focus{border-color:var(--red)}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.btn-primary{width:100%;padding:14px;background:linear-gradient(135deg,var(--red),var(--red-dark));border:none;border-radius:12px;color:var(--white);font-size:15px;font-weight:800;font-family:'Barlow',sans-serif;cursor:pointer;transition:all .2s;text-transform:uppercase;letter-spacing:1px}
+.btn-primary:active{transform:scale(.98);opacity:.9}
+.btn-secondary{width:100%;padding:12px;background:transparent;border:1px solid var(--border);border-radius:12px;color:var(--gray);font-size:14px;font-weight:700;font-family:'Barlow',sans-serif;cursor:pointer;margin-top:8px}
+.cats-check{display:flex;gap:8px;flex-wrap:wrap;margin-top:6px}
+.cat-chk{padding:7px 14px;border-radius:20px;font-size:13px;font-weight:700;cursor:pointer;border:1px solid var(--border);background:var(--dark2);color:var(--gray);transition:all .2s}
+.cat-chk.on{background:rgba(0,132,61,.2);border-color:var(--green);color:var(--green-light)}
+
+/* ─── SEARCH ─── */
+.search-wrap{padding:14px 16px;position:relative}
+.search-input{width:100%;background:var(--dark3);border:1px solid var(--border);border-radius:12px;padding:12px 14px 12px 42px;color:var(--white);font-size:14px;font-family:'Barlow',sans-serif;outline:none;transition:border-color .2s}
+.search-input:focus{border-color:var(--red)}
+.search-ico{position:absolute;left:28px;top:50%;transform:translateY(-50%);font-size:16px;color:var(--gray);pointer-events:none}
+
+/* ─── EMPTY STATE ─── */
+.empty{text-align:center;padding:40px 20px;color:var(--gray)}
+.empty-ico{font-size:48px;margin-bottom:12px}
+.empty-txt{font-size:14px}
+
+/* ─── TOAST ─── */
+#toast{
+  position:fixed;bottom:110px;left:50%;transform:translateX(-50%) translateY(16px);
+  background:var(--green);color:var(--white);padding:12px 24px;border-radius:12px;
+  font-size:14px;font-weight:700;z-index:9998;opacity:0;transition:all .3s;
+  white-space:nowrap;pointer-events:none;
+}
+#toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+select.form-input option{background:var(--dark)}
+textarea.form-input{resize:none}
+.pb{padding-bottom:16px}
+</style>
+</head>
+<body>
+
+<!-- SPLASH -->
+<div id="splash">
+  <div class="splash-stripe-top"></div>
+  <div class="splash-stripe-bot"></div>
+  <div class="splash-ring">
+    <div class="splash-inner">
+      <div class="splash-ball">⚽</div>
+      <div class="splash-wordmark">JEUNES<br>FOOT</div>
+    </div>
+  </div>
+  <div class="splash-name">JEUNES FOOT<br>MARTINIQUE</div>
+  <div class="splash-sub">La référence du foot jeune 🇲🇶</div>
+  <div class="splash-loader"><div class="splash-loader-fill"></div></div>
+</div>
+
+<!-- APP -->
+<div id="app">
+
+  <!-- HEADER -->
+  <div id="header">
+    <div class="hdr-logo">⚽</div>
+    <div class="hdr-title" id="hdr-title">JFM</div>
+    <div class="hdr-notif">🔔<div class="notif-dot"></div></div>
+  </div>
+
+  <!-- MAIN -->
+  <div id="main">
+
+    <!-- ══════════════ HOME ══════════════ -->
+    <div id="screen-home" class="screen active">
+
+      <div class="hero">
+        <div class="hero-glow"></div>
+        <div class="hero-grid"></div>
+        <div class="hero-content">
+          <div class="hero-badge"><div class="live-dot"></div>Saison 2025-2026</div>
+          <div class="hero-title">FOOT JEUNE<br><span>MARTINIQUE</span></div>
+          <div class="hero-sub">Suivez vos jeunes talents 🇲🇶</div>
+        </div>
+        <div class="hero-player">🧒</div>
+      </div>
+
+      <div class="stat-strip">
+        <div class="ssi"><div class="ssi-val">4</div><div class="ssi-lbl">Catégories</div></div>
+        <div class="ssi"><div class="ssi-val">10</div><div class="ssi-lbl">Clubs</div></div>
+        <div class="ssi"><div class="ssi-val">10</div><div class="ssi-lbl">Joueurs</div></div>
+        <div class="ssi"><div class="ssi-val" id="stat-matches">6</div><div class="ssi-lbl">Matchs</div></div>
+      </div>
+
+      <div class="section" style="margin-top:16px">
+        <div class="section-header"><div class="section-title"><span class="sec-line"></span>Catégories</div></div>
+      </div>
+      <div class="cat-grid">
+        <div class="cat-card" onclick="goChamps('U13')"><div class="cat-emoji">⚽</div><div class="cat-label">U13</div><div class="cat-sub">Voir →</div></div>
+        <div class="cat-card" onclick="goChamps('U15')"><div class="cat-emoji">⚽</div><div class="cat-label">U15</div><div class="cat-sub">Voir →</div></div>
+        <div class="cat-card" onclick="goChamps('U17')"><div class="cat-emoji">⚽</div><div class="cat-label">U17</div><div class="cat-sub">Voir →</div></div>
+        <div class="cat-card" onclick="goChamps('U19')"><div class="cat-emoji">⚽</div><div class="cat-label">U19</div><div class="cat-sub">Voir →</div></div>
+      </div>
+
+      <div class="section" style="margin-top:20px">
+        <div class="section-header">
+          <div class="section-title"><span class="sec-line"></span>Résultats récents</div>
+          <button class="see-all" onclick="goChamps('U17')">Voir tout</button>
+        </div>
+        <div id="home-results"></div>
+      </div>
+
+      <div class="section">
+        <div class="section-header"><div class="section-title"><span class="sec-line"></span>À venir</div></div>
+        <div id="home-upcoming"></div>
+      </div>
+
+      <div class="section">
+        <div class="section-header"><div class="section-title"><span class="sec-line"></span>⭐ Talent du moment</div></div>
+        <div class="player-card" onclick="showScreen('players')">
+          <div class="player-av">🧒<div class="pos-badge">ATT</div></div>
+          <div class="player-info">
+            <div class="player-name">Kylian Désir</div>
+            <div class="player-club">⭐ Golden Star FC · U17</div>
+            <div class="player-stats">
+              <div class="pst"><div class="pst-val" style="color:var(--red)">18</div><div class="pst-lbl">Buts</div></div>
+              <div class="pst"><div class="pst-val">7</div><div class="pst-lbl">Passes D.</div></div>
+              <div class="pst"><div class="pst-val">14</div><div class="pst-lbl">Matchs</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-header">
+          <div class="section-title"><span class="sec-line"></span>Actualités</div>
+          <button class="see-all" onclick="showScreen('news')">Voir tout</button>
+        </div>
+        <div id="home-news"></div>
+      </div>
+
+      <div class="section pb">
+        <div class="section-header"><div class="section-title"><span class="sec-line"></span>Partenaires</div></div>
+        <div class="sponsor-card"><div class="sp-logo">🏪</div><div class="sp-name">Sport &amp; Co Martinique</div><div class="sp-tag">Équipez votre équipe au meilleur prix</div><div class="sp-cta">Découvrir →</div></div>
+      </div>
+    </div><!-- /home -->
+
+    <!-- ══════════════ CHAMPIONNATS ══════════════ -->
+    <div id="screen-champs" class="screen">
+      <div class="selector-row" id="cat-selectors"></div>
+      <div class="selector-row" id="lvl-selectors" style="padding-top:6px"></div>
+      <div class="tabs" id="champs-tabs"></div>
+      <div id="champs-content" style="padding:0 16px"></div>
+    </div>
+
+    <!-- ══════════════ JOUEURS ══════════════ -->
+    <div id="screen-players" class="screen">
+      <div class="search-wrap">
+        <span class="search-ico">🔍</span>
+        <input class="search-input" id="player-search" placeholder="Rechercher un joueur, un club..." oninput="filterPlayers()"/>
+      </div>
+      <div class="selector-row" id="player-cats"></div>
+      <div id="players-list" style="padding:12px 16px 0"></div>
+    </div>
+
+    <!-- ══════════════ NEWS ══════════════ -->
+    <div id="screen-news" class="screen">
+      <div class="section" style="padding-top:20px">
+        <div class="section-title" style="margin-bottom:16px;font-size:20px"><span class="sec-line"></span>Actualités</div>
+        <div id="news-list"></div>
+      </div>
+      <div class="section">
+        <div class="section-title" style="margin-bottom:16px"><span class="sec-line"></span>Tournois &amp; Événements</div>
+        <div id="tourn-list"></div>
+      </div>
+      <div class="section pb">
+        <div class="section-title" style="margin-bottom:16px"><span class="sec-line"></span>Partenaires &amp; Sponsors</div>
+        <div id="sponsors-list"></div>
+      </div>
+    </div>
+
+    <!-- ══════════════ HIGHLIGHTS ══════════════ -->
+    <div id="screen-highlights" class="screen">
+      <div class="section" style="padding-top:20px;padding-bottom:16px">
+        <div class="section-title" style="margin-bottom:16px;font-size:20px"><span class="sec-line"></span>Highlights</div>
+        <div id="hl-list"></div>
+      </div>
+    </div>
+
+    <!-- ══════════════ ADMIN ══════════════ -->
+    <div id="screen-admin" class="screen">
+      <div class="admin-header-sec">
+        <div class="admin-title">⚙️ ADMIN</div>
+        <div class="admin-subtitle">Tableau de bord administrateur</div>
+      </div>
+      <div class="stat-strip" style="margin:16px 16px 0">
+        <div class="ssi"><div class="ssi-val" style="color:var(--green-light)">10</div><div class="ssi-lbl">Clubs</div></div>
+        <div class="ssi"><div class="ssi-val" style="color:var(--green-light)">10</div><div class="ssi-lbl">Joueurs</div></div>
+        <div class="ssi"><div class="ssi-val" style="color:var(--red)" id="admin-played">4</div><div class="ssi-lbl">Matchs joués</div></div>
+        <div class="ssi"><div class="ssi-val" style="color:var(--gold)">3</div><div class="ssi-lbl">Tournois</div></div>
+      </div>
+      <div id="admin-grid-wrap">
+        <div class="admin-grid" id="admin-grid"></div>
+      </div>
+      <div id="admin-form-wrap"></div>
+    </div>
+
+    <!-- MATCH DETAIL (overlay inside main) -->
+    <div id="match-detail">
+      <div class="back-btn" onclick="closeMatchDetail()">← Retour</div>
+      <div class="md-header">
+        <div class="md-cats" id="md-cats"></div>
+        <div class="md-teams" id="md-teams"></div>
+      </div>
+      <div class="md-info" id="md-date"></div>
+      <div class="md-info" id="md-venue" style="margin-top:-8px"></div>
+      <div id="md-events" style="padding:0 16px"></div>
+    </div>
+
+  </div><!-- /main -->
+
+  <!-- BOTTOM NAV -->
+  <div id="bottom-nav">
+    <div class="nav-item active" data-screen="home" onclick="showScreen('home')">
+      <div class="nav-bar"></div><div class="nav-icon">🏠</div><div class="nav-label">Accueil</div>
+    </div>
+    <div class="nav-item" data-screen="champs" onclick="showScreen('champs')">
+      <div class="nav-bar"></div><div class="nav-icon">🏆</div><div class="nav-label">Championnats</div>
+    </div>
+    <div class="nav-item" data-screen="players" onclick="showScreen('players')">
+      <div class="nav-bar"></div><div class="nav-icon">👥</div><div class="nav-label">Joueurs</div>
+    </div>
+    <div class="nav-item" data-screen="highlights" onclick="showScreen('highlights')">
+      <div class="nav-bar"></div><div class="nav-icon">🎬</div><div class="nav-label">Highlights</div>
+    </div>
+    <div class="nav-item" data-screen="admin" onclick="showScreen('admin')">
+      <div class="nav-bar"></div><div class="nav-icon">⚙️</div><div class="nav-label">Admin</div>
+    </div>
+  </div>
+
+</div><!-- /app -->
+
+<div id="toast">✅ Enregistré avec succès !</div>
+
+<script>
+// ════════════════════════════════════════════════
+// DATA
+// ════════════════════════════════════════════════
+const CLUBS=[
+  {id:1,name:"Golden Star FC",city:"Fort-de-France",logo:"⭐"},
+  {id:2,name:"Marin FC",city:"Le Marin",logo:"⚓"},
+  {id:3,name:"AS Rivière-Pilote",city:"Rivière-Pilote",logo:"🌊"},
+  {id:4,name:"Saint-Joseph FC",city:"Saint-Joseph",logo:"🦅"},
+  {id:5,name:"CS Case-Pilote",city:"Case-Pilote",logo:"🏔"},
+  {id:6,name:"AS Sainte-Marie",city:"Sainte-Marie",logo:"🌺"},
+  {id:7,name:"Le Lorrain AC",city:"Le Lorrain",logo:"🌿"},
+  {id:8,name:"Trinité Sport",city:"La Trinité",logo:"🔱"},
+  {id:9,name:"Ducos FC",city:"Ducos",logo:"🔥"},
+  {id:10,name:"Bellefontaine AC",city:"Bellefontaine",logo:"💧"},
+];
+
+const CATEGORIES=["U13","U15","U17","U19"];
+const LEVELS=["Division 1","Division 2","Ligue Régionale"];
+
+let MATCHES=[
+  {id:1,home:CLUBS[0],away:CLUBS[1],homeScore:3,awayScore:1,date:"2026-04-12",venue:"Stade Félix Eboué, Fort-de-France",category:"U17",level:"Division 1",played:true,scorers:["Kylian Désir 14'","Axel Montout 57'","Dylan Régis 78'"],assists:["Jordan Fanfan","Marcus Célestin"]},
+  {id:2,home:CLUBS[2],away:CLUBS[3],homeScore:2,awayScore:2,date:"2026-04-12",venue:"Terrain de Rivière-Pilote",category:"U15",level:"Division 1",played:true,scorers:["Noah L. 22'","Ethan M. 45'","T. Bernabé 60'","Jordan F. 88'"],assists:["Marcus C.","Liam S."]},
+  {id:3,home:CLUBS[4],away:CLUBS[5],homeScore:null,awayScore:null,date:"2026-04-26",venue:"Stade de Case-Pilote",category:"U13",level:"Division 2",played:false,scorers:[],assists:[]},
+  {id:4,home:CLUBS[6],away:CLUBS[7],homeScore:null,awayScore:null,date:"2026-04-26",venue:"Terrain du Lorrain",category:"U19",level:"Division 1",played:false,scorers:[],assists:[]},
+  {id:5,home:CLUBS[0],away:CLUBS[3],homeScore:4,awayScore:0,date:"2026-04-05",venue:"Stade Félix Eboué, Fort-de-France",category:"U19",level:"Division 1",played:true,scorers:["Axel Montout 10'","Kylian Désir 34'","Ethan Moreau 67'","Noah L. 89'"],assists:["Jordan Fanfan","Marcus Célestin"]},
+  {id:6,home:CLUBS[8],away:CLUBS[9],homeScore:1,awayScore:3,date:"2026-04-05",venue:"Terrain de Ducos",category:"U15",level:"Division 2",played:true,scorers:["Dylan R. 15'","Axel M. 33'","Marcus C. 66'","Liam S. 78'"],assists:["Théo B.","Jordan F."]},
+];
+
+let PLAYERS=[
+  {id:1,name:"Kylian Désir",club:CLUBS[0],pos:"Attaquant",goals:18,assists:7,apps:14,category:"U17"},
+  {id:2,name:"Marcus Célestin",club:CLUBS[1],pos:"Milieu",goals:12,assists:11,apps:15,category:"U15"},
+  {id:3,name:"Théo Bernabé",club:CLUBS[3],pos:"Attaquant",goals:15,assists:4,apps:13,category:"U19"},
+  {id:4,name:"Jordan Fanfan",club:CLUBS[2],pos:"Milieu",goals:9,assists:13,apps:14,category:"U17"},
+  {id:5,name:"Noah Laventure",club:CLUBS[4],pos:"Défenseur",goals:3,assists:8,apps:15,category:"U13"},
+  {id:6,name:"Ethan Moreau",club:CLUBS[5],pos:"Attaquant",goals:14,assists:5,apps:12,category:"U19"},
+  {id:7,name:"Liam Sainte-Rose",club:CLUBS[6],pos:"Gardien",goals:0,assists:1,apps:14,category:"U15"},
+  {id:8,name:"Dylan Régis",club:CLUBS[7],pos:"Milieu",goals:10,assists:9,apps:13,category:"U17"},
+  {id:9,name:"Axel Montout",club:CLUBS[0],pos:"Attaquant",goals:16,assists:6,apps:15,category:"U19"},
+  {id:10,name:"Noa Luçon",club:CLUBS[8],pos:"Défenseur",goals:2,assists:5,apps:14,category:"U13"},
+];
+
+const NEWS=[
+  {id:1,title:"Kylian Désir, la pépite de Golden Star",excerpt:"À 16 ans, Kylian impressionne avec ses 18 buts en U17. Le jeune attaquant est suivi par plusieurs clubs.",date:"2026-04-17",category:"Talent",emoji:"⭐"},
+  {id:2,title:"Tournoi de Pâques 2026 : Inscriptions ouvertes !",excerpt:"Le traditionnel Tournoi de Pâques revient du 20 au 22 avril. 16 équipes de U13 et U15 s'affronteront à La Trinité.",date:"2026-04-15",category:"Tournoi",emoji:"🏆"},
+  {id:3,title:"Sélection U17 : La liste du sélectionneur",excerpt:"Le sélectionneur a dévoilé les 22 joueurs convoqués pour le prochain stage de préparation inter-ligues.",date:"2026-04-13",category:"Sélection",emoji:"🇲🇶"},
+  {id:4,title:"Nouveau partenariat avec la CTM",excerpt:"La Ligue de Football annonce un partenariat avec la Collectivité pour le développement du football jeune.",date:"2026-04-10",category:"Institution",emoji:"🤝"},
+];
+
+const TOURNAMENTS=[
+  {id:1,name:"Tournoi de Pâques",dates:"20-22 Avril 2026",location:"La Trinité",categories:["U13","U15"],teams:16,status:"Inscriptions ouvertes"},
+  {id:2,name:"Coupe de Martinique Jeunes",dates:"15-30 Mai 2026",location:"Fort-de-France",categories:["U17","U19"],teams:12,status:"À venir"},
+  {id:3,name:"Tournoi Inter-Communes",dates:"14-16 Juin 2026",location:"Le Marin",categories:["U13","U15","U17"],teams:24,status:"À venir"},
+];
+
+const HIGHLIGHTS=[
+  {id:1,title:"But splendide de Kylian Désir – U17 D1",views:"1.2k",date:"il y a 2j",emoji:"⚽"},
+  {id:2,title:"Résumé : Golden Star vs Marin FC",views:"890",date:"il y a 3j",emoji:"🎬"},
+  {id:3,title:"Top 5 buts de la semaine",views:"2.4k",date:"il y a 5j",emoji:"🔥"},
+  {id:4,title:"Entraînement U13 – Académie Martinique",views:"567",date:"il y a 6j",emoji:"🏃"},
+  {id:5,title:"Jeune talent : Marcus Célestin U15",views:"1.8k",date:"il y a 1sem",emoji:"⭐"},
+];
+
+const SPONSORS=[
+  {logo:"🏪",name:"Sport & Co Martinique",tag:"Équipez votre équipe au meilleur prix"},
+  {logo:"🍹",name:"Rhums du Père Labat",tag:"Fier partenaire du football martiniquais"},
+  {logo:"🏥",name:"Clinique du Sport Antilles",tag:"La santé de vos jeunes champions"},
+];
+
+// standings per category/level (generated)
+const STANDINGS={};
+function buildStandings(){
+  CATEGORIES.forEach(cat=>{
+    STANDINGS[cat]={};
+    LEVELS.forEach(lvl=>{
+      const shuffled=[...CLUBS].sort(()=>Math.random()-.5).slice(0,8);
+      STANDINGS[cat][lvl]=shuffled.map((c,i)=>({
+        club:c,played:10+Math.floor(Math.random()*4),
+        won:Math.max(0,7-i+Math.floor(Math.random()*3)),
+        drawn:Math.floor(Math.random()*3),
+        lost:Math.min(10,i+Math.floor(Math.random()*2)),
+        gf:20+Math.floor(Math.random()*15),ga:8+i*2+Math.floor(Math.random()*5),
+        pts:Math.max(0,(7-i)*3+Math.floor(Math.random()*5))
+      })).sort((a,b)=>b.pts-a.pts);
+    });
+  });
+}
+buildStandings();
+
+// ════════════════════════════════════════════════
+// STATE
+// ════════════════════════════════════════════════
+let currentScreen='home';
+let champsCat='U17', champsLevel='Division 1', champsTab='Classement';
+let playerFilter='Tous';
+let selectedMatch=null;
+
+// ════════════════════════════════════════════════
+// NAVIGATION
+// ════════════════════════════════════════════════
+const TITLES={home:'JFM',champs:'Championnats',players:'Joueurs',news:'News & Tournois',highlights:'Highlights',admin:'Administration'};
+
+function showScreen(name, skipDetail=true){
+  if(skipDetail) closeMatchDetail(false);
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n=>{
+    n.classList.toggle('active', n.dataset.screen===name);
+  });
+  const el=document.getElementById('screen-'+name);
+  if(el) el.classList.add('active');
+  document.getElementById('hdr-title').textContent=TITLES[name]||'';
+  currentScreen=name;
+  if(name==='champs') renderChamps();
+  if(name==='players') renderPlayers();
+  if(name==='news') renderNews();
+  if(name==='highlights') renderHighlights();
+  if(name==='admin') renderAdmin();
+  document.getElementById('main').scrollTop=0;
+}
+
+function goChamps(cat){
+  champsCat=cat; champsTab='Classement';
+  showScreen('champs');
+}
+
+// ════════════════════════════════════════════════
+// HOME
+// ════════════════════════════════════════════════
+function renderHome(){
+  const played=MATCHES.filter(m=>m.played);
+  const upcoming=MATCHES.filter(m=>!m.played);
+  document.getElementById('home-results').innerHTML=played.slice(0,3).map(m=>matchCardHTML(m)).join('');
+  document.getElementById('home-upcoming').innerHTML=upcoming.slice(0,2).map(m=>matchCardHTML(m)).join('');
+  document.getElementById('home-news').innerHTML=NEWS.slice(0,2).map(n=>newsCardHTML(n)).join('');
+  document.getElementById('stat-matches').textContent=MATCHES.length;
+}
+
+// ════════════════════════════════════════════════
+// MATCH CARD HTML
+// ════════════════════════════════════════════════
+function fmtDate(d){
+  const dt=new Date(d+'T12:00:00');
+  return dt.toLocaleDateString('fr-FR',{day:'2-digit',month:'short'});
+}
+
+function matchCardHTML(m){
+  const score=m.played
+    ?`<div class="score-num">${m.homeScore} <span style="color:var(--gray)">-</span> ${m.awayScore}</div>`
+    :`<div class="score-vs">VS</div>`;
+  const badge=m.played?'<span class="badge b-done">Terminé</span>':'<span class="badge b-soon">À venir</span>';
+  return`<div class="match-card" onclick="openMatch(${m.id})">
+    <div class="mc-top">
+      <div class="mc-meta"><span class="badge b-cat">${m.category}</span>${badge}</div>
+      <span class="mc-date">${fmtDate(m.date)}</span>
+    </div>
+    <div class="mc-teams">
+      <div class="team-side">
+        <div class="team-logo">${m.home.logo}</div>
+        <div class="team-name">${m.home.name}</div>
+      </div>
+      <div class="score-box">${score}</div>
+      <div class="team-side away">
+        <div class="team-logo">${m.away.logo}</div>
+        <div class="team-name">${m.away.name}</div>
+      </div>
+    </div>
+    <div class="mc-venue">📍 ${m.venue}</div>
+  </div>`;
+}
+
+// ════════════════════════════════════════════════
+// MATCH DETAIL
+// ════════════════════════════════════════════════
+function openMatch(id){
+  selectedMatch=MATCHES.find(m=>m.id===id);
+  if(!selectedMatch) return;
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  const d=selectedMatch;
+  document.getElementById('md-cats').innerHTML=`<span class="badge b-cat">${d.category}</span><span class="badge b-done">${d.level}</span>`;
+  const scoreHTML=d.played
+    ?`<div class="sd-num">${d.homeScore}<span style="color:var(--gray)"> - </span>${d.awayScore}</div><div class="sd-lbl">TERMINÉ</div>`
+    :`<div style="font-size:14px;color:var(--gray);font-weight:700;padding:4px 0">VS</div><div class="sd-lbl">${new Date(d.date+'T12:00:00').toLocaleDateString('fr-FR')}</div>`;
+  document.getElementById('md-teams').innerHTML=`
+    <div class="team-block"><div class="tl-lg">${d.home.logo}</div><div class="tn-lg">${d.home.name}</div></div>
+    <div class="score-display">${scoreHTML}</div>
+    <div class="team-block"><div class="tl-lg">${d.away.logo}</div><div class="tn-lg">${d.away.name}</div></div>`;
+  const dtFull=new Date(d.date+'T12:00:00').toLocaleDateString('fr-FR',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
+  document.getElementById('md-date').textContent='📅 '+dtFull;
+  document.getElementById('md-venue').textContent='📍 '+d.venue;
+  let evHTML='';
+  if(d.played && d.scorers.length){
+    evHTML+=`<div style="font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:800;text-transform:uppercase;letter-spacing:1px;margin:16px 0 10px"><span class="sec-line"></span>Buteurs</div>`;
+    d.scorers.forEach(s=>{
+      const parts=s.split(' ');
+      evHTML+=`<div class="event-item"><div class="ev-icon">⚽</div><div><div class="ev-player">${parts[0]} ${parts[1]||''}</div><div class="ev-time">${parts.slice(2).join(' ')}</div></div></div>`;
+    });
+  }
+  if(d.played && d.assists.length){
+    evHTML+=`<div style="font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:800;text-transform:uppercase;letter-spacing:1px;margin:16px 0 10px"><span class="sec-line"></span>Passes décisives</div>`;
+    d.assists.forEach(a=>{
+      evHTML+=`<div class="event-item"><div class="ev-icon">🎯</div><div><div class="ev-player">${a}</div></div></div>`;
+    });
+  }
+  document.getElementById('md-events').innerHTML=evHTML;
+  document.getElementById('match-detail').classList.add('active');
+  document.getElementById('main').scrollTop=0;
+}
+
+function closeMatchDetail(doScroll=true){
+  document.getElementById('match-detail').classList.remove('active');
+  if(currentScreen){
+    document.getElementById('screen-'+currentScreen).classList.add('active');
+  }
+  if(doScroll) document.getElementById('main').scrollTop=0;
+}
+
+// ════════════════════════════════════════════════
+// CHAMPIONNATS
+// ════════════════════════════════════════════════
+function renderChamps(){
+  // cat selectors
+  const cs=document.getElementById('cat-selectors');
+  cs.innerHTML=CATEGORIES.map(c=>`<div class="chip ${c===champsCat?'active':''}" onclick="setCat('${c}')">${c}</div>`).join('');
+  // level selectors
+  const ls=document.getElementById('lvl-selectors');
+  ls.innerHTML=LEVELS.map(l=>`<div class="chip ${l===champsLevel?'active':''}" onclick="setLevel('${l}')">${l}</div>`).join('');
+  // tabs
+  const tabs=['Calendrier','Résultats','Classement','Buteurs','Passeurs'];
+  const tb=document.getElementById('champs-tabs');
+  tb.innerHTML=tabs.map(t=>`<div class="tab ${t===champsTab?'active':''}" onclick="setChampsTab('${t}')">${t}</div>`).join('');
+  renderChampsContent();
+}
+
+function setCat(c){champsCat=c; renderChamps();}
+function setLevel(l){champsLevel=l; renderChamps();}
+function setChampsTab(t){champsTab=t; renderChamps();}
+
+function renderChampsContent(){
+  const container=document.getElementById('champs-content');
+  const catMatches=MATCHES.filter(m=>m.category===champsCat && m.level===champsLevel);
+
+  if(champsTab==='Calendrier'){
+    const list=catMatches.filter(m=>!m.played);
+    container.innerHTML=list.length?list.map(m=>matchCardHTML(m)).join(''):`<div class="empty"><div class="empty-ico">📅</div><div class="empty-txt">Aucun match à venir pour ${champsCat} · ${champsLevel}</div></div>`;
+  }
+  else if(champsTab==='Résultats'){
+    const list=catMatches.filter(m=>m.played);
+    container.innerHTML=list.length?list.map(m=>matchCardHTML(m)).join(''):`<div class="empty"><div class="empty-ico">🏁</div><div class="empty-txt">Aucun résultat pour ${champsCat} · ${champsLevel}</div></div>`;
+  }
+  else if(champsTab==='Classement'){
+    const rows=STANDINGS[champsCat][champsLevel];
+    let html=`<div class="standings-wrap"><table><thead><tr><th>#</th><th>Club</th><th>J</th><th>G</th><th>N</th><th>P</th><th>Pts</th></tr></thead><tbody>`;
+    rows.forEach((r,i)=>{
+      const rc=i===0?'r1':i===1?'r2':i===2?'r3':'';
+      html+=`<tr>
+        <td><span class="rank-num ${rc}">${i+1}</span></td>
+        <td><div class="club-cell"><span class="club-logo-sm">${r.club.logo}</span><div><div class="club-cell-name">${r.club.name}</div><div class="club-cell-city">${r.club.city}</div></div></div></td>
+        <td>${r.played}</td>
+        <td style="color:var(--green-light)">${r.won}</td>
+        <td>${r.drawn}</td>
+        <td style="color:var(--red)">${r.lost}</td>
+        <td><span class="pts">${r.pts}</span></td>
+      </tr>`;
+    });
+    html+=`</tbody></table></div>`;
+    container.innerHTML=html;
+  }
+  else if(champsTab==='Buteurs'){
+    const list=[...PLAYERS].filter(p=>p.category===champsCat).sort((a,b)=>b.goals-a.goals);
+    container.innerHTML=`<div class="scorers-wrap">${list.map((p,i)=>`<div class="scorer-row">
+      <div class="sc-rank">${i+1}</div>
+      <div class="sc-av">🧒</div>
+      <div class="sc-info"><div class="sc-name">${p.name}</div><div class="sc-club">${p.club.logo} ${p.club.name}</div></div>
+      <div class="sc-stat"><span class="sc-icon">⚽</span>${p.goals}</div>
+    </div>`).join('')}</div>`;
+  }
+  else if(champsTab==='Passeurs'){
+    const list=[...PLAYERS].filter(p=>p.category===champsCat).sort((a,b)=>b.assists-a.assists);
+    container.innerHTML=`<div class="scorers-wrap">${list.map((p,i)=>`<div class="scorer-row">
+      <div class="sc-rank">${i+1}</div>
+      <div class="sc-av">🧒</div>
+      <div class="sc-info"><div class="sc-name">${p.name}</div><div class="sc-club">${p.club.logo} ${p.club.name}</div></div>
+      <div class="sc-stat" style="color:var(--gold)"><span class="sc-icon">🎯</span>${p.assists}</div>
+    </div>`).join('')}</div>`;
+  }
+}
+
+// ════════════════════════════════════════════════
+// PLAYERS
+// ════════════════════════════════════════════════
+function renderPlayers(){
+  const catEl=document.getElementById('player-cats');
+  catEl.innerHTML=['Tous',...CATEGORIES].map(c=>`<div class="chip ${c===playerFilter?'active':''}" onclick="setPlayerCat('${c}')">${c}</div>`).join('');
+  filterPlayers();
+}
+function setPlayerCat(c){playerFilter=c; renderPlayers();}
+function filterPlayers(){
+  const q=(document.getElementById('player-search').value||'').toLowerCase();
+  const list=PLAYERS.filter(p=>{
+    const matchQ=!q||p.name.toLowerCase().includes(q)||p.club.name.toLowerCase().includes(q);
+    const matchC=playerFilter==='Tous'||p.category===playerFilter;
+    return matchQ && matchC;
+  });
+  const container=document.getElementById('players-list');
+  if(!list.length){container.innerHTML=`<div class="empty"><div class="empty-ico">👥</div><div class="empty-txt">Aucun joueur trouvé</div></div>`;return;}
+  container.innerHTML=list.map(p=>`<div class="player-card">
+    <div class="player-av">🧒<div class="pos-badge">${p.pos.slice(0,3).toUpperCase()}</div></div>
+    <div class="player-info">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start">
+        <div><div class="player-name">${p.name}</div><div class="player-club">${p.club.logo} ${p.club.name}</div></div>
+        <span class="badge b-cat">${p.category}</span>
+      </div>
+      <div class="player-stats">
+        <div class="pst"><div class="pst-val" style="color:var(--red)">${p.goals}</div><div class="pst-lbl">Buts</div></div>
+        <div class="pst"><div class="pst-val" style="color:var(--gold)">${p.assists}</div><div class="pst-lbl">PD</div></div>
+        <div class="pst"><div class="pst-val">${p.apps}</div><div class="pst-lbl">Matchs</div></div>
+      </div>
+    </div>
+  </div>`).join('');
+}
+
+// ════════════════════════════════════════════════
+// NEWS
+// ════════════════════════════════════════════════
+function newsCardHTML(n){
+  const dt=new Date(n.date+'T12:00:00').toLocaleDateString('fr-FR',{day:'2-digit',month:'long',year:'numeric'});
+  return`<div class="news-card">
+    <div class="news-icon">${n.emoji}</div>
+    <div class="news-body">
+      <div class="news-cat">${n.category}</div>
+      <div class="news-title">${n.title}</div>
+      <div class="news-date">${dt}</div>
+    </div>
+  </div>`;
+}
+function renderNews(){
+  document.getElementById('news-list').innerHTML=NEWS.map(n=>newsCardHTML(n)).join('');
+  document.getElementById('tourn-list').innerHTML=TOURNAMENTS.map(t=>`<div class="tourn-card">
+    <div class="tourn-name">🏆 ${t.name}</div>
+    <div class="tmeta">📅 ${t.dates}</div>
+    <div class="tmeta">📍 ${t.location}</div>
+    <div class="tmeta">👥 ${t.teams} équipes</div>
+    <div class="tourn-cats">${t.categories.map(c=>`<span class="badge b-cat">${c}</span>`).join('')}</div>
+    <div class="status ${t.status==='Inscriptions ouvertes'?'s-open':'s-soon'}">${t.status==='Inscriptions ouvertes'?'✅ ':'🔜 '}${t.status}</div>
+  </div>`).join('');
+  document.getElementById('sponsors-list').innerHTML=SPONSORS.map(s=>`<div class="sponsor-card">
+    <div class="sp-logo">${s.logo}</div>
+    <div class="sp-name">${s.name}</div>
+    <div class="sp-tag">${s.tag}</div>
+    <div class="sp-cta">En savoir plus →</div>
+  </div>`).join('');
+}
+
+// ════════════════════════════════════════════════
+// HIGHLIGHTS
+// ════════════════════════════════════════════════
+function renderHighlights(){
+  document.getElementById('hl-list').innerHTML=HIGHLIGHTS.map(h=>`<div class="hl-card">
+    <div class="hl-thumb">
+      <div class="hl-glow"></div>
+      <div class="hl-emoji">${h.emoji}</div>
+      <div class="play-btn">▶</div>
+    </div>
+    <div class="hl-info">
+      <div class="hl-title">${h.title}</div>
+      <div class="hl-meta"><span>👁 ${h.views} vues</span><span>🕐 ${h.date}</span></div>
+    </div>
+  </div>`).join('');
+}
+
+// ════════════════════════════════════════════════
+// ADMIN
+// ════════════════════════════════════════════════
+const ADMIN_ACTIONS=[
+  {id:'result',icon:'⚽',label:'Résultat match',sub:'Entrer un score'},
+  {id:'player',icon:'👤',label:'Joueur',sub:'Ajouter un profil'},
+  {id:'team',icon:'🏟',label:'Équipe',sub:'Créer une équipe'},
+  {id:'news',icon:'📰',label:'Actualité',sub:'Publier un article'},
+  {id:'tournament',icon:'🏆',label:'Tournoi',sub:'Créer un tournoi'},
+  {id:'goal',icon:'🎯',label:'But / Passe D.',sub:'Enregistrer un event'},
+];
+
+function renderAdmin(){
+  document.getElementById('admin-played').textContent=MATCHES.filter(m=>m.played).length;
+  document.getElementById('admin-grid').innerHTML=ADMIN_ACTIONS.map(a=>`<div class="admin-action" onclick="showAdminForm('${a.id}')">
+    <div class="aa-icon">${a.icon}</div>
+    <div class="aa-label">${a.label}</div>
+    <div class="aa-sub">${a.sub}</div>
+  </div>`).join('');
+  document.getElementById('admin-form-wrap').innerHTML='';
+  document.getElementById('admin-grid-wrap').style.display='';
+}
+
+function showAdminForm(type){
+  document.getElementById('admin-grid-wrap').style.display='none';
+  const wrap=document.getElementById('admin-form-wrap');
+  const clubOpts=CLUBS.map(c=>`<option value="${c.id}">${c.name}</option>`).join('');
+  const catOpts=CATEGORIES.map(c=>`<option>${c}</option>`).join('');
+  const lvlOpts=LEVELS.map(l=>`<option>${l}</option>`).join('');
+  const posOpts=['Gardien','Défenseur','Milieu','Attaquant'].map(p=>`<option>${p}</option>`).join('');
+  const matchOpts=MATCHES.map(m=>`<option value="${m.id}">${m.home.name} vs ${m.away.name} (${m.category})</option>`).join('');
+
+  let inner='';
+  if(type==='result') inner=`
+    <div class="af-title">⚽ Entrer un résultat</div>
+    <div class="form-row">
+      <div class="form-group"><label class="form-label">Catégorie</label><select class="form-input">${catOpts}</select></div>
+      <div class="form-group"><label class="form-label">Niveau</label><select class="form-input">${lvlOpts}</select></div>
+    </div>
+    <div class="form-group"><label class="form-label">Équipe domicile</label><select class="form-input">${clubOpts}</select></div>
+    <div class="form-group"><label class="form-label">Équipe extérieure</label><select class="form-input">${clubOpts}</select></div>
+    <div class="form-row">
+      <div class="form-group"><label class="form-label">Score domicile</label><input class="form-input" type="number" min="0" placeholder="0"/></div>
+      <div class="form-group"><label class="form-label">Score extérieur</label><input class="form-input" type="number" min="0" placeholder="0"/></div>
+    </div>
+    <div class="form-group"><label class="form-label">Date du match</label><input class="form-input" type="date"/></div>
+    <div class="form-group"><label class="form-label">Lieu</label><input class="form-input" type="text" placeholder="Stade..."/></div>`;
+
+  else if(type==='player') inner=`
+    <div class="af-title">👤 Ajouter un joueur</div>
+    <div class="form-group"><label class="form-label">Nom complet</label><input class="form-input" type="text" placeholder="Prénom Nom"/></div>
+    <div class="form-group"><label class="form-label">Club</label><select class="form-input">${clubOpts}</select></div>
+    <div class="form-row">
+      <div class="form-group"><label class="form-label">Poste</label><select class="form-input">${posOpts}</select></div>
+      <div class="form-group"><label class="form-label">Catégorie</label><select class="form-input">${catOpts}</select></div>
+    </div>`;
+
+  else if(type==='team') inner=`
+    <div class="af-title">🏟 Créer une équipe</div>
+    <div class="form-group"><label class="form-label">Nom du club</label><input class="form-input" type="text" placeholder="Nom du club"/></div>
+    <div class="form-group"><label class="form-label">Ville</label><input class="form-input" type="text" placeholder="Ville"/></div>
+    <div class="form-row">
+      <div class="form-group"><label class="form-label">Catégorie</label><select class="form-input">${catOpts}</select></div>
+      <div class="form-group"><label class="form-label">Niveau</label><select class="form-input">${lvlOpts}</select></div>
+    </div>`;
+
+  else if(type==='news') inner=`
+    <div class="af-title">📰 Publier une actualité</div>
+    <div class="form-group"><label class="form-label">Titre</label><input class="form-input" type="text" placeholder="Titre de l'article"/></div>
+    <div class="form-group"><label class="form-label">Catégorie</label><select class="form-input"><option>Talent</option><option>Tournoi</option><option>Sélection</option><option>Institution</option><option>Résultat</option></select></div>
+    <div class="form-group"><label class="form-label">Contenu</label><textarea class="form-input" rows="5" placeholder="Contenu de l'article..."></textarea></div>`;
+
+  else if(type==='tournament') inner=`
+    <div class="af-title">🏆 Créer un tournoi</div>
+    <div class="form-group"><label class="form-label">Nom du tournoi</label><input class="form-input" type="text" placeholder="Nom du tournoi"/></div>
+    <div class="form-group"><label class="form-label">Lieu</label><input class="form-input" type="text" placeholder="Ville / Terrain"/></div>
+    <div class="form-row">
+      <div class="form-group"><label class="form-label">Date début</label><input class="form-input" type="date"/></div>
+      <div class="form-group"><label class="form-label">Date fin</label><input class="form-input" type="date"/></div>
+    </div>
+    <div class="form-group"><label class="form-label">Catégories</label>
+      <div class="cats-check">${CATEGORIES.map(c=>`<div class="cat-chk" onclick="this.classList.toggle('on')">${c}</div>`).join('')}</div>
+    </div>`;
+
+  else if(type==='goal') inner=`
+    <div class="af-title">🎯 Enregistrer But / Passe D.</div>
+    <div class="form-group"><label class="form-label">Type</label><select class="form-input"><option>But</option><option>Passe décisive</option></select></div>
+    <div class="form-group"><label class="form-label">Joueur</label><select class="form-input">${PLAYERS.map(p=>`<option value="${p.id}">${p.name}</option>`).join('')}</select></div>
+    <div class="form-row">
+      <div class="form-group"><label class="form-label">Minute</label><input class="form-input" type="number" min="1" max="120" placeholder="45"/></div>
+      <div class="form-group"><label class="form-label">Match</label><select class="form-input">${matchOpts}</select></div>
+    </div>`;
+
+  wrap.innerHTML=`<div class="admin-form">${inner}
+    <button class="btn-primary" onclick="submitAdminForm()">✅ Enregistrer</button>
+    <button class="btn-secondary" onclick="renderAdmin()">Annuler</button>
+  </div>`;
+  document.getElementById('main').scrollTop=0;
+}
+
+function submitAdminForm(){
+  document.getElementById('admin-form-wrap').innerHTML='';
+  document.getElementById('admin-grid-wrap').style.display='';
+  showToast('Enregistré avec succès !');
+  renderAdmin();
+}
+
+// ════════════════════════════════════════════════
+// TOAST
+// ════════════════════════════════════════════════
+function showToast(msg){
+  const t=document.getElementById('toast');
+  t.textContent='✅ '+msg;
+  t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),3000);
+}
+
+// ════════════════════════════════════════════════
+// INIT
+// ════════════════════════════════════════════════
+document.addEventListener('DOMContentLoaded',()=>{
+  renderHome();
+  renderChamps();
+});
+</script>
+</body>
+</html>
