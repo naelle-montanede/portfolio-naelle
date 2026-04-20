@@ -1,0 +1,556 @@
+s<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Rapport de Stage – 1ère Année BTS SIO – Naëlle Montanede</title>
+<link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400&display=swap" rel="stylesheet"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  font-family:'DM Sans',sans-serif;
+  font-size:15px;line-height:1.75;
+  color:#1a1a1a;background:#f8f7f4;
+}
+
+/* ── SIDEBAR FIXE ── */
+#sidebar{
+  position:fixed;top:0;left:0;bottom:0;width:260px;
+  background:#1a1520;color:#ccc;
+  display:flex;flex-direction:column;
+  padding:32px 24px;gap:0;z-index:100;
+  overflow-y:auto;
+}
+.sb-logo{
+  font-family:'Crimson Pro',serif;font-size:1.4rem;font-weight:600;
+  color:#fff;letter-spacing:0.5px;margin-bottom:4px;
+}
+.sb-sub{font-size:0.72rem;color:#7a7080;letter-spacing:1px;text-transform:uppercase;margin-bottom:32px;}
+.sb-section{margin-bottom:6px;}
+.sb-section a{
+  display:flex;align-items:center;gap:8px;
+  text-decoration:none;color:#8892b0;
+  font-size:0.78rem;padding:7px 10px;border-radius:6px;
+  transition:all 0.2s;
+}
+.sb-section a:hover,.sb-section a.active{
+  color:#fff;background:rgba(255,255,255,0.06);
+}
+.sb-section a .num{
+  font-family:'DM Mono',monospace;font-size:0.62rem;
+  color:#5b3fa0;min-width:20px;
+}
+.sb-divider{height:1px;background:rgba(255,255,255,0.06);margin:16px 0;}
+.sb-info{font-size:0.7rem;color:#4a4060;line-height:1.6;}
+.sb-info strong{color:#7a7080;display:block;margin-bottom:4px;font-size:0.65rem;letter-spacing:1px;text-transform:uppercase;}
+
+/* ── MAIN ── */
+#main{margin-left:260px;min-height:100vh;}
+
+/* ── PAGE DE GARDE ── */
+#cover{
+  background:linear-gradient(145deg,#1a1520 0%,#2d1a4a 50%,#1a1520 100%);
+  color:#fff;min-height:100vh;
+  display:flex;flex-direction:column;justify-content:center;
+  padding:80px 72px;position:relative;overflow:hidden;
+}
+#cover::before{
+  content:'';position:absolute;inset:0;
+  background-image:radial-gradient(circle at 70% 30%,rgba(201,168,76,0.08) 0%,transparent 60%),
+                   radial-gradient(circle at 20% 80%,rgba(91,63,160,0.12) 0%,transparent 50%);
+}
+.cover-eyebrow{
+  font-family:'DM Mono',monospace;font-size:0.72rem;
+  letter-spacing:3px;text-transform:uppercase;
+  color:rgba(201,168,76,0.8);margin-bottom:20px;
+  position:relative;z-index:1;
+}
+.cover-title{
+  font-family:'Crimson Pro',serif;
+  font-size:clamp(2.5rem,6vw,4rem);
+  font-weight:300;line-height:1.05;
+  color:#fff;margin-bottom:8px;
+  position:relative;z-index:1;
+}
+.cover-title strong{font-weight:600;color:#c9a84c;}
+.cover-subtitle{
+  font-size:1.1rem;color:rgba(255,255,255,0.55);
+  margin-bottom:48px;font-weight:300;
+  position:relative;z-index:1;
+}
+.cover-rule{
+  width:60px;height:2px;
+  background:linear-gradient(90deg,#c9a84c,transparent);
+  margin-bottom:48px;position:relative;z-index:1;
+}
+.cover-grid{
+  display:grid;grid-template-columns:1fr 1fr;gap:24px;
+  position:relative;z-index:1;
+}
+.cover-block{
+  background:rgba(255,255,255,0.05);
+  border:1px solid rgba(255,255,255,0.08);
+  border-radius:10px;padding:18px 22px;
+}
+.cover-block-label{
+  font-family:'DM Mono',monospace;font-size:0.62rem;
+  letter-spacing:2px;text-transform:uppercase;
+  color:rgba(201,168,76,0.7);margin-bottom:6px;display:block;
+}
+.cover-block-val{font-size:0.92rem;color:rgba(255,255,255,0.85);}
+
+/* ── SECTIONS ── */
+.section{padding:64px 72px;border-bottom:1px solid rgba(0,0,0,0.06);}
+.section:last-child{border-bottom:none;}
+.section-eyebrow{
+  font-family:'DM Mono',monospace;font-size:0.65rem;
+  letter-spacing:3px;text-transform:uppercase;
+  color:#5b3fa0;display:block;margin-bottom:10px;
+}
+.section-title{
+  font-family:'Crimson Pro',serif;
+  font-size:clamp(1.6rem,4vw,2.4rem);
+  font-weight:600;color:#1a1520;
+  margin-bottom:8px;line-height:1.1;
+}
+.section-rule{
+  width:40px;height:2px;
+  background:linear-gradient(90deg,#c9a84c,transparent);
+  margin:16px 0 32px;border-radius:2px;
+}
+h3{
+  font-family:'Crimson Pro',serif;
+  font-size:1.25rem;font-weight:600;
+  color:#1a1520;margin:28px 0 10px;
+}
+p{color:#3d3550;margin-bottom:14px;}
+strong{color:#1a1520;}
+
+/* ── BOÎTES INFO ── */
+.info-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:24px 0;}
+.info-box{
+  background:#fff;border:1px solid rgba(90,63,160,0.12);
+  border-radius:10px;padding:18px 20px;
+}
+.info-box-label{
+  font-family:'DM Mono',monospace;font-size:0.62rem;
+  letter-spacing:2px;text-transform:uppercase;
+  color:#8a6f30;margin-bottom:6px;display:block;
+}
+.info-box-val{font-size:0.9rem;color:#1a1520;font-weight:500;}
+
+/* ── MISSIONS ── */
+.mission-list{list-style:none;padding:0;display:flex;flex-direction:column;gap:12px;margin:20px 0;}
+.mission-item{
+  display:flex;align-items:flex-start;gap:14px;
+  background:#fff;border:1px solid rgba(90,63,160,0.1);
+  border-radius:10px;padding:16px 18px;
+}
+.mission-num{
+  font-family:'DM Mono',monospace;font-size:0.7rem;
+  color:#5b3fa0;background:rgba(91,63,160,0.08);
+  padding:3px 8px;border-radius:4px;flex-shrink:0;margin-top:1px;
+}
+.mission-text{font-size:0.9rem;color:#3d3550;}
+.mission-text strong{color:#1a1520;display:block;margin-bottom:2px;}
+
+/* ── COMPÉTENCES ── */
+.comp-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin:20px 0;}
+.comp-tag{
+  background:#fff;border:1px solid rgba(90,63,160,0.12);
+  border-radius:8px;padding:10px 14px;
+  font-size:0.82rem;color:#3d3550;
+  display:flex;align-items:center;gap:8px;
+}
+.comp-tag::before{content:'';width:6px;height:6px;background:#c9a84c;border-radius:50%;flex-shrink:0;}
+
+/* ── BILAN ── */
+.bilan-card{
+  background:linear-gradient(135deg,#1a1520,#2d1a4a);
+  border-radius:14px;padding:32px 36px;margin:24px 0;color:#fff;
+}
+.bilan-card h3{color:#c9a84c;font-family:'Crimson Pro',serif;font-size:1.3rem;margin-bottom:12px;}
+.bilan-card p{color:rgba(255,255,255,0.7);margin-bottom:10px;}
+.bilan-card ul{list-style:none;padding:0;display:flex;flex-direction:column;gap:8px;}
+.bilan-card ul li{
+  font-size:0.88rem;color:rgba(255,255,255,0.75);
+  padding-left:16px;position:relative;
+}
+.bilan-card ul li::before{content:'▹';position:absolute;left:0;color:#c9a84c;}
+
+/* ── CONCLUSION ── */
+.conclusion-box{
+  background:#fff;border-left:3px solid #c9a84c;
+  border-radius:0 10px 10px 0;
+  padding:24px 28px;margin:24px 0;
+  font-family:'Crimson Pro',serif;font-size:1.1rem;
+  color:#2d1a4a;font-style:italic;line-height:1.7;
+}
+
+/* ── ANNEXES ── */
+.annexe-item{
+  background:#fff;border:1px solid rgba(90,63,160,0.1);
+  border-radius:10px;padding:16px 20px;margin-bottom:12px;
+  display:flex;align-items:center;justify-content:space-between;gap:16px;
+}
+.annexe-item a{
+  font-family:'DM Mono',monospace;font-size:0.72rem;
+  color:#5b3fa0;text-decoration:none;
+  border-bottom:1px solid rgba(91,63,160,0.3);
+  padding-bottom:1px;
+}
+.annexe-item a:hover{color:#7c5cc7;}
+
+/* ── NAV PRINT / RETOUR ── */
+.back-btn{
+  display:inline-flex;align-items:center;gap:6px;
+  font-family:'DM Mono',monospace;font-size:0.7rem;
+  color:#5b3fa0;text-decoration:none;
+  border:1px solid rgba(91,63,160,0.25);
+  padding:7px 14px;border-radius:6px;
+  transition:all 0.2s;margin-bottom:32px;
+}
+.back-btn:hover{background:#ede8f8;}
+
+/* ── TABLE DES MATIÈRES ── */
+.toc{
+  background:#fff;border:1px solid rgba(90,63,160,0.1);
+  border-radius:12px;padding:28px 32px;margin:24px 0;
+}
+.toc-title{
+  font-family:'DM Mono',monospace;font-size:0.65rem;
+  letter-spacing:2px;text-transform:uppercase;
+  color:#8a6f30;margin-bottom:16px;display:block;
+}
+.toc-list{list-style:none;padding:0;display:flex;flex-direction:column;gap:4px;}
+.toc-item{display:flex;align-items:center;gap:8px;}
+.toc-item a{
+  text-decoration:none;color:#3d3550;font-size:0.88rem;
+  transition:color 0.2s;
+}
+.toc-item a:hover{color:#5b3fa0;}
+.toc-item::before{
+  content:'';flex:1;border-bottom:1px dotted rgba(90,63,160,0.15);
+  order:2;
+}
+.toc-num{
+  font-family:'DM Mono',monospace;font-size:0.65rem;
+  color:#7a7080;order:3;
+}
+.toc-item a{order:1;}
+
+/* RESPONSIVE */
+@media(max-width:900px){
+  #sidebar{display:none;}
+  #main{margin-left:0;}
+  .section{padding:48px 28px;}
+  #cover{padding:60px 28px;}
+  .cover-grid{grid-template-columns:1fr;}
+  .info-grid{grid-template-columns:1fr;}
+}
+@media print{
+  #sidebar{display:none;}
+  #main{margin-left:0;}
+  .back-btn{display:none;}
+}
+</style>
+</head>
+<body>
+
+<!-- SIDEBAR -->
+<nav id="sidebar">
+  <div class="sb-logo">Naëlle Montanede</div>
+  <div class="sb-sub">Rapport de stage · 1A</div>
+
+  <div class="sb-section"><a href="#cover"><span class="num">00</span> Page de garde</a></div>
+  <div class="sb-section"><a href="#intro"><span class="num">01</span> Introduction</a></div>
+  <div class="sb-section"><a href="#entreprise"><span class="num">02</span> Présentation de l'entreprise</a></div>
+  <div class="sb-section"><a href="#missions"><span class="num">03</span> Missions réalisées</a></div>
+  <div class="sb-section"><a href="#competences"><span class="num">04</span> Compétences mobilisées</a></div>
+  <div class="sb-section"><a href="#bilan"><span class="num">05</span> Bilan & apports</a></div>
+  <div class="sb-section"><a href="#conclusion"><span class="num">06</span> Conclusion</a></div>
+  <div class="sb-section"><a href="#annexes"><span class="num">07</span> Annexes</a></div>
+
+  <div class="sb-divider"></div>
+  <div class="sb-info">
+    <strong>Établissement</strong>Lycée Joseph Gaillard
+    <strong style="margin-top:10px;">Formation</strong>BTS SIO · SLAM
+    <strong style="margin-top:10px;">Année</strong>2024 – 2025
+  </div>
+</nav>
+
+<!-- MAIN -->
+<div id="main">
+
+  <!-- COVER -->
+  <div id="cover">
+    <div class="cover-eyebrow">BTS Services Informatiques aux Organisations · Option SLAM</div>
+    <h1 class="cover-title">Rapport de <strong>Stage</strong><br>1ère Année</h1>
+    <p class="cover-subtitle">Création d'un site web vitrine et boutique en ligne</p>
+    <div class="cover-rule"></div>
+    <div class="cover-grid">
+      <div class="cover-block">
+        <span class="cover-block-label">Candidate</span>
+        <div class="cover-block-val">Montanede Naëlle Yannah<br><span style="font-size:0.8rem;color:rgba(255,255,255,0.5);">N° 02250741607</span></div>
+      </div>
+      <div class="cover-block">
+        <span class="cover-block-label">Établissement d'accueil</span>
+        <div class="cover-block-val">Mairie du Lamentin<br><span style="font-size:0.8rem;color:rgba(255,255,255,0.5);">Service informatique</span></div>
+      </div>
+      <div class="cover-block">
+        <span class="cover-block-label">Période du stage</span>
+        <div class="cover-block-val">Mai 2025 – Juillet 2025</div>
+      </div>
+      <div class="cover-block">
+        <span class="cover-block-label">Tuteur de stage</span>
+        <div class="cover-block-val">Service informatique<br><span style="font-size:0.8rem;color:rgba(255,255,255,0.5);">Mairie du Lamentin</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TABLE DES MATIÈRES -->
+  <div class="section" id="toc-section">
+    <span class="section-eyebrow">Sommaire</span>
+    <h2 class="section-title">Table des matières</h2>
+    <div class="section-rule"></div>
+    <div class="toc">
+      <span class="toc-title">Contenu du rapport</span>
+      <ul class="toc-list">
+        <li class="toc-item"><a href="#intro">Introduction</a><span class="toc-num">01</span></li>
+        <li class="toc-item"><a href="#entreprise">Présentation de l'entreprise</a><span class="toc-num">02</span></li>
+        <li class="toc-item"><a href="#missions">Missions réalisées</a><span class="toc-num">03</span></li>
+        <li class="toc-item"><a href="#competences">Compétences mobilisées</a><span class="toc-num">04</span></li>
+        <li class="toc-item"><a href="#bilan">Bilan &amp; apports</a><span class="toc-num">05</span></li>
+        <li class="toc-item"><a href="#conclusion">Conclusion</a><span class="toc-num">06</span></li>
+        <li class="toc-item"><a href="#annexes">Annexes</a><span class="toc-num">07</span></li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- INTRODUCTION -->
+  <div class="section" id="intro">
+    <span class="section-eyebrow">// 01 — Introduction</span>
+    <h2 class="section-title">Introduction</h2>
+    <div class="section-rule"></div>
+    <p>Dans le cadre de ma première année de <strong>BTS Services Informatiques aux Organisations (SIO), option SLAM</strong>, au lycée Joseph Gaillard en Martinique, j'ai effectué un stage obligatoire au sein du <strong>service informatique de la Mairie du Lamentin</strong>, du mois de mai au mois de juillet 2025.</p>
+    <p>Ce stage représente une étape fondamentale dans mon parcours de formation : il m'a permis de confronter les connaissances théoriques acquises en cours à la réalité du monde professionnel, dans un contexte institutionnel exigeant et structuré.</p>
+    <p>La mission principale qui m'a été confiée consistait en la <strong>conception et le déploiement d'un site web vitrine transformé en boutique en ligne</strong>, en utilisant des outils no-code (WordPress, Divi, WooCommerce) ainsi que des technologies d'intelligence artificielle pour la génération de contenus visuels. J'ai également participé aux réunions internes du service et présenté les usages de l'IA à l'équipe.</p>
+    <p>Ce rapport présente le déroulement de ce stage, les missions accomplies, les compétences développées ainsi que le bilan personnel et professionnel que j'en tire.</p>
+  </div>
+
+  <!-- ENTREPRISE -->
+  <div class="section" id="entreprise">
+    <span class="section-eyebrow">// 02 — Présentation</span>
+    <h2 class="section-title">Présentation de l'entreprise</h2>
+    <div class="section-rule"></div>
+
+    <div class="info-grid">
+      <div class="info-box">
+        <span class="info-box-label">Structure</span>
+        <div class="info-box-val">Mairie du Lamentin</div>
+      </div>
+      <div class="info-box">
+        <span class="info-box-label">Secteur</span>
+        <div class="info-box-val">Collectivité territoriale – Service public</div>
+      </div>
+      <div class="info-box">
+        <span class="info-box-label">Localisation</span>
+        <div class="info-box-val">Le Lamentin, Martinique (972)</div>
+      </div>
+      <div class="info-box">
+        <span class="info-box-label">Service d'accueil</span>
+        <div class="info-box-val">Direction des systèmes d'information</div>
+      </div>
+    </div>
+
+    <h3>Contexte et activité</h3>
+    <p>La Mairie du Lamentin est la commune la plus peuplée de la Martinique. En tant que collectivité territoriale, elle assure de nombreuses missions de service public : état civil, urbanisme, culture, sport, social, etc. Son service informatique gère l'ensemble de l'infrastructure numérique de la commune, des postes de travail aux applications métiers en passant par le site institutionnel.</p>
+
+    <h3>Le service informatique</h3>
+    <p>Le service dans lequel j'ai effectué mon stage est chargé de la maintenance du parc informatique, du support aux agents municipaux, de la gestion des systèmes d'information et du développement de projets numériques au bénéfice de la collectivité. C'est dans ce cadre que la mission de création d'un site e-commerce m'a été confiée, dans une logique de modernisation de la présence numérique de la commune.</p>
+  </div>
+
+  <!-- MISSIONS -->
+  <div class="section" id="missions">
+    <span class="section-eyebrow">// 03 — Missions</span>
+    <h2 class="section-title">Missions réalisées</h2>
+    <div class="section-rule"></div>
+
+    <p>Au cours de mon stage, j'ai mené plusieurs missions distinctes, toutes centrées autour de la création et du déploiement d'un site web e-commerce ainsi que de la diffusion des bonnes pratiques liées à l'intelligence artificielle.</p>
+
+    <ul class="mission-list">
+      <li class="mission-item">
+        <span class="mission-num">M1</span>
+        <div class="mission-text">
+          <strong>Analyse du besoin et conception du site</strong>
+          Recueil des besoins auprès du responsable, définition de l'architecture du site, choix des outils (WordPress + Divi + WooCommerce + SEOPress), maquettage des principales pages.
+        </div>
+      </li>
+      <li class="mission-item">
+        <span class="mission-num">M2</span>
+        <div class="mission-text">
+          <strong>Installation et configuration WordPress</strong>
+          Installation de WordPress sur l'hébergement fourni, choix et personnalisation du thème Divi, configuration des paramètres généraux, sécurité et performances.
+        </div>
+      </li>
+      <li class="mission-item">
+        <span class="mission-num">M3</span>
+        <div class="mission-text">
+          <strong>Développement de la boutique WooCommerce</strong>
+          Mise en place du plugin WooCommerce, création des fiches produits, configuration du catalogue, paramétrage des options de commande, livraison et paiement. Rédaction des pages légales obligatoires (CGV, mentions légales, politique de confidentialité).
+        </div>
+      </li>
+      <li class="mission-item">
+        <span class="mission-num">M4</span>
+        <div class="mission-text">
+          <strong>Optimisation SEO avec SEOPress</strong>
+          Configuration du plugin SEOPress, rédaction des balises méta pour chaque page, optimisation des URLs, mise en place du sitemap XML, maillage interne et référencement naturel.
+        </div>
+      </li>
+      <li class="mission-item">
+        <span class="mission-num">M5</span>
+        <div class="mission-text">
+          <strong>Génération de visuels par intelligence artificielle</strong>
+          Utilisation d'outils d'IA générative (DALL·E, Midjourney) pour la création des images produits, des bannières et des visuels du site. Cette approche a permis de diviser par trois le temps de production des éléments visuels tout en maintenant une qualité professionnelle.
+        </div>
+      </li>
+      <li class="mission-item">
+        <span class="mission-num">M6</span>
+        <div class="mission-text">
+          <strong>Présentation IA en réunion d'équipe</strong>
+          Participation aux réunions internes du service informatique. Préparation et présentation d'un exposé sur les usages de l'intelligence artificielle dans le contexte professionnel et les outils disponibles pour les agents.
+        </div>
+      </li>
+    </ul>
+
+    <h3>Déroulement chronologique</h3>
+    <p><strong>Semaines 1-2 :</strong> Prise en main de l'environnement de travail, analyse du besoin, installation et configuration de WordPress et Divi.</p>
+    <p><strong>Semaines 3-4 :</strong> Intégration de WooCommerce, création du catalogue produits, rédaction des contenus et pages légales.</p>
+    <p><strong>Semaines 5-6 :</strong> Génération des visuels IA, optimisation SEO, tests et validation du site.</p>
+    <p><strong>Semaines 7-8 :</strong> Finalisation, présentation en réunion d'équipe, documentation et bilan.</p>
+  </div>
+
+  <!-- COMPÉTENCES -->
+  <div class="section" id="competences">
+    <span class="section-eyebrow">// 04 — Compétences</span>
+    <h2 class="section-title">Compétences mobilisées</h2>
+    <div class="section-rule"></div>
+
+    <p>Ce stage m'a permis de mettre en pratique et de développer de nombreuses compétences relevant du référentiel BTS SIO, aussi bien techniques que transversales.</p>
+
+    <h3>Compétences techniques</h3>
+    <div class="comp-grid">
+      <div class="comp-tag">WordPress – administration</div>
+      <div class="comp-tag">Divi – intégration no-code</div>
+      <div class="comp-tag">WooCommerce – e-commerce</div>
+      <div class="comp-tag">SEOPress – référencement</div>
+      <div class="comp-tag">HTML / CSS – personnalisation</div>
+      <div class="comp-tag">IA générative – images</div>
+      <div class="comp-tag">Gestion d'hébergement</div>
+      <div class="comp-tag">Rédaction pages légales</div>
+    </div>
+
+    <h3>Compétences du référentiel BTS SIO</h3>
+    <div class="comp-grid">
+      <div class="comp-tag">Développer la présence en ligne</div>
+      <div class="comp-tag">Travailler en mode projet</div>
+      <div class="comp-tag">Organiser son développement professionnel</div>
+      <div class="comp-tag">Mettre en œuvre une veille informationnelle</div>
+      <div class="comp-tag">Gérer son identité professionnelle</div>
+      <div class="comp-tag">Analyser les objectifs d'un projet</div>
+    </div>
+
+    <h3>Compétences transversales</h3>
+    <div class="comp-grid">
+      <div class="comp-tag">Communication orale – réunions</div>
+      <div class="comp-tag">Rédaction professionnelle</div>
+      <div class="comp-tag">Autonomie et initiative</div>
+      <div class="comp-tag">Respect des délais</div>
+      <div class="comp-tag">Adaptation au contexte institutionnel</div>
+    </div>
+  </div>
+
+  <!-- BILAN -->
+  <div class="section" id="bilan">
+    <span class="section-eyebrow">// 05 — Bilan</span>
+    <h2 class="section-title">Bilan &amp; apports</h2>
+    <div class="section-rule"></div>
+
+    <div class="bilan-card">
+      <h3>Apports professionnels</h3>
+      <p>Ce stage m'a permis de développer une véritable expérience de création de site e-commerce en conditions réelles, avec des contraintes professionnelles et institutionnelles. Parmi les principaux apports :</p>
+      <ul>
+        <li>Maîtrise de la chaîne complète de création d'un site e-commerce no-code</li>
+        <li>Compréhension des enjeux juridiques du e-commerce (CGV, RGPD, mentions légales)</li>
+        <li>Expérimentation concrète de l'IA générative dans un contexte professionnel</li>
+        <li>Développement des capacités de présentation et de communication en équipe</li>
+        <li>Découverte du fonctionnement d'un service informatique en collectivité territoriale</li>
+      </ul>
+    </div>
+
+    <h3>Difficultés rencontrées</h3>
+    <p>La principale difficulté rencontrée a été la <strong>gestion des contraintes techniques de l'hébergement</strong> mis à disposition, qui imposait certaines limitations en termes de plugins et de performances. J'ai dû adapter mes choix techniques en conséquence et trouver des solutions alternatives.</p>
+    <p>La <strong>rédaction des contenus</strong> a également représenté un défi, notamment les pages légales qui requièrent une attention particulière à la conformité réglementaire. L'utilisation de l'IA comme assistant de rédaction a permis de gagner en efficacité tout en maintenant la qualité.</p>
+
+    <h3>Solutions apportées</h3>
+    <p>Face aux contraintes d'hébergement, j'ai opté pour une optimisation progressive des ressources et sélectionné des plugins légers. Pour la rédaction, j'ai combiné recherche documentaire, outils IA et validation par le tuteur pour garantir la conformité des contenus produits.</p>
+  </div>
+
+  <!-- CONCLUSION -->
+  <div class="section" id="conclusion">
+    <span class="section-eyebrow">// 06 — Conclusion</span>
+    <h2 class="section-title">Conclusion</h2>
+    <div class="section-rule"></div>
+
+    <p>Ce stage de première année au service informatique de la Mairie du Lamentin a été une expérience particulièrement enrichissante, tant sur le plan technique que humain. Il m'a permis de valider et d'approfondir les compétences acquises au cours de ma première année de BTS SIO, tout en découvrant la réalité du travail dans un environnement institutionnel.</p>
+
+    <div class="conclusion-box">
+      "La réalisation de ce projet e-commerce, de la conception à la mise en ligne, m'a convaincue que le no-code, associé à l'intelligence artificielle, représente aujourd'hui un levier puissant pour créer des expériences digitales professionnelles de manière efficace et accessible."
+    </div>
+
+    <p>Cette expérience a confirmé mon attrait pour le développement web et le design d'interfaces, et a renforcé mon projet professionnel : poursuivre mes études en Licence Professionnelle Développement Web pour approfondir mes compétences, avant d'exercer à mon compte en tant que développeuse et designeuse freelance.</p>
+    <p>Je remercie l'équipe du service informatique de la Mairie du Lamentin pour son accueil et son accompagnement tout au long de ce stage.</p>
+  </div>
+
+  <!-- ANNEXES -->
+  <div class="section" id="annexes">
+    <span class="section-eyebrow">// 07 — Annexes</span>
+    <h2 class="section-title">Annexes</h2>
+    <div class="section-rule"></div>
+
+    <p>Les documents suivants complètent ce rapport de stage et attestent des réalisations effectuées.</p>
+
+    <div class="annexe-item">
+      <span style="font-size:0.88rem;color:#3d3550;"><strong>Annexe 1</strong> — Documentation technique du projet e-commerce</span>
+      <a href="https://drive.google.com/drive/folders/1k4ujWW1BC4_Kx2LTCypph6RvR0XO2uMR?usp=drive_link" target="_blank">Voir sur Drive →</a>
+    </div>
+    <div class="annexe-item">
+      <span style="font-size:0.88rem;color:#3d3550;"><strong>Annexe 2</strong> — Tableau de synthèse des compétences E5</span>
+      <a href="tableau_synthese.pdf" target="_blank">Télécharger PDF →</a>
+    </div>
+    <div class="annexe-item">
+      <span style="font-size:0.88rem;color:#3d3550;"><strong>Annexe 3</strong> — Portfolio professionnel en ligne</span>
+      <a href="https://naelle-montanede.github.io/portfolio-naelle/" target="_blank">Voir le portfolio →</a>
+    </div>
+  </div>
+
+</div>
+
+<script>
+const sections=document.querySelectorAll('.section[id],#cover');
+const links=document.querySelectorAll('#sidebar a');
+const obs=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){
+      links.forEach(l=>l.classList.remove('active'));
+      const id=e.target.id==='cover'?'cover':e.target.id;
+      const link=document.querySelector(`#sidebar a[href="#${id}"]`);
+      if(link)link.classList.add('active');
+    }
+  });
+},{threshold:0.4});
+sections.forEach(s=>obs.observe(s));
+</script>
+</body>
+</html>
