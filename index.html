@@ -671,7 +671,32 @@ footer .f-logo em{color:var(--violet);font-style:italic;}
 .synth-row-val{color:var(--ink);font-weight:500;}
 @media(max-width:768px){.synthese-wrap{grid-template-columns:1fr;}}
 
+/* PROJET PROFESSIONNEL */
+.projet-pro-wrap{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-top:8px;}
+.pp-timeline{display:flex;flex-direction:column;gap:0;}
+.pp-step{display:flex;gap:20px;align-items:flex-start;padding-bottom:28px;position:relative;}
+.pp-step:not(:last-child)::after{content:'';position:absolute;left:19px;top:40px;bottom:0;width:1px;background:linear-gradient(to bottom,var(--violet),var(--gold),transparent);}
+.pp-dot{width:40px;height:40px;border-radius:50%;flex-shrink:0;background:var(--violet-pale);border:2px solid var(--violet);display:flex;align-items:center;justify-content:center;font-size:1rem;position:relative;z-index:1;}
+.pp-step.current .pp-dot{background:var(--violet);box-shadow:0 0 0 4px rgba(91,63,160,0.15);}
+.pp-when{font-family:var(--ff-mono);font-size:0.62rem;color:var(--gold-dim);letter-spacing:1px;text-transform:uppercase;display:block;margin-bottom:4px;}
+.pp-title{font-family:var(--ff-display);font-size:1.05rem;font-weight:600;color:var(--ink);margin-bottom:4px;}
+.pp-desc{font-size:0.83rem;color:var(--muted);line-height:1.6;}
+.pp-goals{display:flex;flex-direction:column;gap:12px;}
+.pp-goal{background:var(--off);border:1px solid var(--border);border-radius:12px;padding:16px 18px;transition:all 0.3s;}
+.pp-goal:hover{border-color:rgba(91,63,160,0.3);transform:translateX(4px);}
+.pp-goal-icon{font-size:1.2rem;margin-bottom:6px;display:block;}
+.pp-goal h4{font-family:var(--ff-display);font-size:0.95rem;font-weight:600;color:var(--ink);margin-bottom:4px;}
+.pp-goal p{font-size:0.8rem;color:var(--muted);line-height:1.55;}
+.pp-ambition{grid-column:1/-1;background:var(--ink);border-radius:16px;padding:32px 36px;display:flex;align-items:center;gap:32px;position:relative;overflow:hidden;}
+.pp-ambition::before{content:'';position:absolute;top:-40px;right:-40px;width:200px;height:200px;background:radial-gradient(circle,rgba(201,168,76,0.12) 0%,transparent 70%);}
+.pp-ambition::after{content:'';position:absolute;bottom:-40px;left:-40px;width:180px;height:180px;background:radial-gradient(circle,rgba(91,63,160,0.15) 0%,transparent 70%);}
+.pp-quote{font-family:var(--ff-display);font-size:clamp(1.3rem,3vw,1.8rem);font-weight:300;color:var(--white);line-height:1.3;font-style:italic;flex:1;position:relative;z-index:1;}
+.pp-quote em{color:var(--gold);font-style:normal;}
+.pp-quote-author{font-family:var(--ff-mono);font-size:0.65rem;color:rgba(255,255,255,0.4);letter-spacing:1px;margin-top:12px;display:block;}
+@media(max-width:900px){.projet-pro-wrap{grid-template-columns:1fr;}.pp-ambition{flex-direction:column;gap:16px;}}
+
 /* SCROLL TOP */
+#top-btn{
   position:fixed;bottom:32px;right:32px;
   width:44px;height:44px;border-radius:10px;
   background:var(--white);border:1px solid var(--border);
@@ -727,9 +752,9 @@ footer .f-logo em{color:var(--violet);font-style:italic;}
         <li><a href="#about">À propos</a></li>
         <li><a href="#experiences">Expériences</a></li>
         <li><a href="#projets">Projets</a></li>
-        <li><a href="#synthese">Synthèse E5</a></li>
         <li><a href="#certifications">Certifications</a></li>
         <li><a href="#veille">Veille</a></li>
+        <li><a href="#projet-pro">Projet pro</a></li>
         <li><a href="#contact">Contact</a></li>
       </ul>
     </nav>
@@ -741,9 +766,9 @@ footer .f-logo em{color:var(--violet);font-style:italic;}
   <a href="#about">À propos</a>
   <a href="#experiences">Expériences</a>
   <a href="#projets">Projets</a>
-  <a href="#synthese">Tableau de synthèse E5</a>
   <a href="#certifications">Certifications</a>
   <a href="#veille">Veille technologique</a>
+  <a href="#projet-pro">Projet professionnel</a>
   <a href="#contact">Contact</a>
 </div>
 
@@ -788,9 +813,6 @@ footer .f-logo em{color:var(--violet);font-style:italic;}
     </div>
   </div>
   <div class="hero-scroll-hint">
-    <div class="scroll-line"></div>
-    Scroll pour explorer
-  </div>
 </section>
 
 <!-- ============ ABOUT ============ -->
@@ -811,8 +833,8 @@ footer .f-logo em{color:var(--violet);font-style:italic;}
       </div>
       <div class="about-text">
         <h3>Développeuse front-end passionnée par l'IA et le design</h3>
-        <p>Je suis <strong>Naëlle Montanede</strong> (n° candidat 02250741607), étudiante en <strong>BTS SIO option SLAM</strong> en Martinique. Mon parcours mêle développement web, design d'interface et communication digitale — enrichis à chaque projet par l'intelligence artificielle.</p>
-        <p>Après deux stages formateurs — Mairie du Lamentin et CGSS — j'ai acquis une vraie expérience terrain : création de sites e-commerce, développement d'applications métier, et analyse stratégique de l'IA dans la communication interne.</p>
+        <p>Je suis <strong>Naëlle Montanede</strong> (n° candidat 02250741607), étudiante en <strong>BTS SIO option SLAM</strong> au lycée Joseph Gaillard en Martinique. Mon parcours mêle développement web, design d'interface et communication digitale — enrichis à chaque projet par l'intelligence artificielle.</p>
+        <p>Après deux stages formateurs — Mairie du Lamentin et CGSS — j'ai acquis une vraie expérience terrain : création de sites e-commerce, développement d'applications métier, et analyse stratégique de l'IA dans la communication interne. J'ai également effectué un stage à <strong>LAKOUDIGITAL</strong> (hub d'innovation caribéen) et une semaine d'observation à <strong>VIA ATV</strong>, chaîne locale de médias.</p>
         <p>Mon objectif : construire des expériences digitales complètes, mémorables, et à la pointe des usages technologiques.</p>
         <div style="margin-top:16px;margin-bottom:8px;">
           <a href="https://naelle-montanede.github.io/portfolio-naelle/" target="_blank" class="btn btn-outline" style="font-size:0.65rem;padding:8px 16px;">🔗 naelle-montanede.github.io/portfolio-naelle</a>
@@ -1126,50 +1148,73 @@ footer .f-logo em{color:var(--violet);font-style:italic;}
         <a href="https://drive.google.com/drive/folders/1k4ujWW1BC4_Kx2LTCypph6RvR0XO2uMR?usp=drive_link" target="_blank" class="proj-link">📁 Documentation Drive</a>
       </div>
 
+      <!-- SITE RANDO MARTINIQUE -->
+      <div class="proj-card reveal">
+        <div class="proj-visual" style="height:200px;padding:0;overflow:hidden;border-radius:10px;position:relative;">
+          <div style="position:absolute;inset:0;background:linear-gradient(145deg,#071f0d 0%,#0e3d1a 40%,#1a5c2a 70%,#0a2e14 100%);">
+            <!-- Contenu visuel nature -->
+            <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:10px;">
+              <!-- Montagne stylisée -->
+              <div style="position:relative;width:180px;height:90px;">
+                <svg viewBox="0 0 180 90" style="width:100%;height:100%;">
+                  <polygon points="90,5 160,85 20,85" fill="rgba(26,92,42,0.6)" stroke="rgba(45,138,66,0.4)" stroke-width="1"/>
+                  <polygon points="50,30 110,85 0,85" fill="rgba(7,31,13,0.7)" stroke="none"/>
+                  <polygon points="130,20 180,85 80,85" fill="rgba(10,46,20,0.65)" stroke="none"/>
+                  <circle cx="30" cy="18" r="8" fill="rgba(201,150,58,0.6)"/>
+                  <text x="90" y="50" text-anchor="middle" fill="rgba(255,255,255,0.15)" font-size="28" font-family="serif">🌿</text>
+                </svg>
+              </div>
+              <div style="font-family:'Playfair Display',serif;font-size:0.85rem;font-style:italic;color:rgba(255,255,255,0.7);letter-spacing:1px;">À la Découverte de la Martinique</div>
+              <div style="display:flex;gap:8px;">
+                <span style="font-size:0.62rem;font-family:monospace;background:rgba(212,84,122,0.3);border:1px solid rgba(212,84,122,0.4);color:#f0a0bb;padding:2px 8px;border-radius:100px;">34 Communes</span>
+                <span style="font-size:0.62rem;font-family:monospace;background:rgba(201,150,58,0.2);border:1px solid rgba(201,150,58,0.35);color:#f0c46a;padding:2px 8px;border-radius:100px;">Randonnées</span>
+                <span style="font-size:0.62rem;font-family:monospace;background:rgba(26,92,42,0.4);border:1px solid rgba(45,138,66,0.4);color:#7ecf8f;padding:2px 8px;border-radius:100px;">Panoramas</span>
+              </div>
+            </div>
+            <!-- Badge multilingue -->
+            <div style="position:absolute;top:10px;right:10px;background:rgba(0,0,0,0.5);backdrop-filter:blur(4px);border-radius:6px;padding:3px 8px;font-size:0.58rem;color:rgba(255,255,255,0.7);font-family:monospace;letter-spacing:1px;">FR · EN · CR</div>
+            <div style="position:absolute;top:10px;left:10px;background:rgba(0,0,0,0.5);backdrop-filter:blur(4px);border-radius:6px;padding:3px 8px;font-size:0.6rem;color:rgba(255,255,255,0.7);font-family:monospace;">🇲🇶 MARTINIQUE</div>
+          </div>
+        </div>
+
+        <h3>Site Randonnées Martinique</h3>
+        <p>Site web de découverte touristique de la Martinique — exploration des 34 communes, sentiers de randonnée, panoramas exceptionnels. Interface multilingue français, anglais et créole.</p>
+
+        <div class="proj-techs">
+          <span class="ptech">HTML · CSS · JS</span>
+          <span class="ptech">Multilingue FR/EN/CR</span>
+          <span class="ptech">34 Communes</span>
+          <span class="ptech">Splash screen</span>
+          <span class="ptech">Responsive</span>
+        </div>
+
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin:12px 0;">
+          <div style="background:rgba(26,92,42,0.06);border:1px solid rgba(26,92,42,0.2);border-radius:8px;padding:8px 10px;">
+            <div style="font-size:0.7rem;color:#1a5c2a;font-family:var(--ff-mono);margin-bottom:2px;">🗺️ Communes</div>
+            <div style="font-size:0.75rem;color:var(--ink2);">Les 34 communes avec infos et points d'intérêt</div>
+          </div>
+          <div style="background:rgba(212,84,122,0.06);border:1px solid rgba(212,84,122,0.2);border-radius:8px;padding:8px 10px;">
+            <div style="font-size:0.7rem;color:#d4547a;font-family:var(--ff-mono);margin-bottom:2px;">🥾 Randonnées</div>
+            <div style="font-size:0.75rem;color:var(--ink2);">Sentiers filtrables par difficulté et durée</div>
+          </div>
+          <div style="background:rgba(201,150,58,0.06);border:1px solid rgba(201,150,58,0.2);border-radius:8px;padding:8px 10px;">
+            <div style="font-size:0.7rem;color:#c9963a;font-family:var(--ff-mono);margin-bottom:2px;">🏔️ Panoramas</div>
+            <div style="font-size:0.75rem;color:var(--ink2);">Points de vue exceptionnels de l'île</div>
+          </div>
+          <div style="background:rgba(91,63,160,0.06);border:1px solid rgba(91,63,160,0.15);border-radius:8px;padding:8px 10px;">
+            <div style="font-size:0.7rem;color:var(--violet);font-family:var(--ff-mono);margin-bottom:2px;">🌐 Multilingue</div>
+            <div style="font-size:0.75rem;color:var(--ink2);">Français, Anglais et Créole martiniquais</div>
+          </div>
+        </div>
+
+        <div class="btn-row">
+          <a href="siteRando.html" target="_blank" class="proj-link" style="border-bottom:none;background:rgba(26,92,42,0.08);border:1px solid rgba(26,92,42,0.25);color:#1a5c2a;padding:8px 16px;border-radius:8px;font-family:var(--ff-mono);font-size:0.68rem;text-decoration:none;display:inline-flex;align-items:center;gap:6px;transition:all 0.2s;" onmouseenter="this.style.background='rgba(26,92,42,0.18)'" onmouseleave="this.style.background='rgba(26,92,42,0.08)'">🌿 Voir le site</a>
+        </div>
+      </div>
+
     </div>
   </div>
 </section>
-
-<!-- ============ TABLEAU DE SYNTHÈSE ============ -->
-<section id="synthese">
-  <div class="reveal">
-    <span class="eyebrow">// E5 — Tableau de synthèse</span>
-    <h2 class="sec-h">Épreuve <em>E5</em> · BTS SIO 2025</h2>
-    <div class="rule"></div>
-  </div>
-  <div class="synthese-wrap reveal">
-    <div class="synth-card-main">
-      <h3>Tableau de synthèse des réalisations professionnelles</h3>
-      <p>Récapitulatif de toutes les compétences mises en œuvre lors des réalisations en formation et en milieu professionnel, dans le cadre de l'épreuve E5 du BTS SIO.</p>
-      <a href="tableau_synthese.pdf" target="_blank" class="btn" style="background:rgba(201,168,76,0.15);border-color:var(--gold);color:var(--gold);align-self:flex-start;">↓ Télécharger le tableau PDF</a>
-    </div>
-    <div class="synth-card-info">
-      <div style="font-family:var(--ff-display);font-size:1.1rem;font-weight:600;color:var(--ink);margin-bottom:8px;">Informations candidat</div>
-      <div class="synth-row">
-        <span class="synth-row-label">Nom</span>
-        <span class="synth-row-val">Montanede Naëlle Yannah</span>
-      </div>
-      <div class="synth-row">
-        <span class="synth-row-label">N° Candidat</span>
-        <span class="synth-row-val" style="font-family:var(--ff-mono);color:var(--violet);">02250741607</span>
-      </div>
-      <div class="synth-row">
-        <span class="synth-row-label">Option</span>
-        <span class="synth-row-val">SLAM</span>
-      </div>
-      <div class="synth-row">
-        <span class="synth-row-label">Session</span>
-        <span class="synth-row-val">2025</span>
-      </div>
-      <div class="synth-row">
-        <span class="synth-row-label">Portfolio URL</span>
-        <span class="synth-row-val"><a href="https://naelle-montanede.github.io/portfolio-naelle/" target="_blank" style="color:var(--violet);text-decoration:none;font-size:0.78rem;">naelle-montanede.github.io</a></span>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ============ CERTIFICATIONS ============ -->
 <section id="certifications">
   <div class="reveal">
     <span class="eyebrow">// 05 — Certifications</span>
@@ -1316,10 +1361,108 @@ footer .f-logo em{color:var(--violet);font-style:italic;}
   </div>
 </section>
 
+<!-- ============ PROJET PROFESSIONNEL ============ -->
+<section id="projet-pro">
+  <div class="reveal">
+    <span class="eyebrow">// 07 — Projet professionnel</span>
+    <h2 class="sec-h">Vision &amp; <em>ambitions</em></h2>
+    <div class="rule"></div>
+  </div>
+
+  <div class="projet-pro-wrap">
+
+    <!-- FEUILLE DE ROUTE -->
+    <div class="reveal">
+      <p style="font-size:0.92rem;color:var(--ink2);margin-bottom:28px;">Mon projet s'articule autour d'une trajectoire claire : consolider mes bases techniques, me spécialiser dans les domaines qui me passionnent, et à terme exercer en freelance avec une identité forte.</p>
+      <div class="pp-timeline">
+
+        <div class="pp-step current">
+          <div class="pp-dot"><span>🎓</span></div>
+          <div class="pp-body">
+            <span class="pp-when">2024 – 2026 · En cours</span>
+            <div class="pp-title">BTS SIO option SLAM</div>
+            <p class="pp-desc">Lycée Joseph Gaillard · Martinique. Développement web, projets professionnels, stages en entreprise.</p>
+          </div>
+        </div>
+
+        <div class="pp-step">
+          <div class="pp-dot"><span>📚</span></div>
+          <div class="pp-body">
+            <span class="pp-when">2026 – 2027 · Prochaine étape</span>
+            <div class="pp-title">Licence Pro Développement Web</div>
+            <p class="pp-desc">Poursuite d'études en Licence Professionnelle — approfondissement du développement web, frameworks modernes et pratiques agiles. Formation à distance envisagée.</p>
+          </div>
+        </div>
+
+        <div class="pp-step">
+          <div class="pp-dot"><span>💼</span></div>
+          <div class="pp-body">
+            <span class="pp-when">À terme · Objectif</span>
+            <div class="pp-title">Freelance — Studio digital indépendant</div>
+            <p class="pp-desc">Exercer à mon compte : conception de sites, applications et identités visuelles pour des clients en Martinique et à distance, avec une approche hybride dev + design + IA.</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- DOMAINES VISÉS -->
+    <div class="reveal">
+      <p style="font-family:var(--ff-mono);font-size:0.65rem;color:var(--gold-dim);letter-spacing:2px;text-transform:uppercase;margin-bottom:16px;">Domaines de spécialisation</p>
+      <div class="pp-goals">
+
+        <div class="pp-goal">
+          <span class="pp-goal-icon">💻</span>
+          <h4>Développement web front-end</h4>
+          <p>Maîtrise des technologies web modernes (HTML, CSS, JS, frameworks), création d'interfaces performantes et accessibles, intégration de design systems.</p>
+        </div>
+
+        <div class="pp-goal">
+          <span class="pp-goal-icon">🎨</span>
+          <h4>UI/UX Design</h4>
+          <p>Conception d'expériences utilisateur cohérentes et mémorables — maquettage Figma, prototypage, design system, tests utilisateurs.</p>
+        </div>
+
+        <div class="pp-goal">
+          <span class="pp-goal-icon">🤖</span>
+          <h4>Intelligence artificielle appliquée</h4>
+          <p>Intégration de l'IA dans les workflows créatifs et de développement — génération de contenu, automatisation, outils IA pour les entreprises.</p>
+        </div>
+
+        <div class="pp-goal">
+          <span class="pp-goal-icon">📢</span>
+          <h4>Communication digitale</h4>
+          <p>Stratégie de contenu, identité visuelle de marque, storytelling digital — offrir une approche globale aux clients au-delà du code.</p>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- CITATION AMBITION -->
+    <div class="pp-ambition reveal">
+      <div class="pp-quote">
+        "Créer des expériences digitales <em>complètes</em> — du code à l'identité visuelle — augmentées par <em>l'intelligence artificielle</em>."
+        <span class="pp-quote-author">— Naëlle Montanede · Vision 2026</span>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:10px;flex-shrink:0;position:relative;z-index:1;">
+        <div style="background:rgba(201,168,76,0.1);border:1px solid rgba(201,168,76,0.25);border-radius:10px;padding:12px 16px;text-align:center;">
+          <div style="font-family:var(--ff-display);font-size:1.8rem;font-weight:600;color:var(--gold);line-height:1;">∞</div>
+          <div style="font-family:var(--ff-mono);font-size:0.6rem;color:rgba(255,255,255,0.4);margin-top:4px;">Créativité</div>
+        </div>
+        <div style="background:rgba(91,63,160,0.15);border:1px solid rgba(91,63,160,0.3);border-radius:10px;padding:12px 16px;text-align:center;">
+          <div style="font-family:var(--ff-display);font-size:1.8rem;font-weight:600;color:var(--violet-light);line-height:1;">IA</div>
+          <div style="font-family:var(--ff-mono);font-size:0.6rem;color:rgba(255,255,255,0.4);margin-top:4px;">Augmentée</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
 <!-- ============ CONTACT ============ -->
 <section id="contact">
   <div class="reveal">
-    <span class="eyebrow">// 07 — Contact</span>
+    <span class="eyebrow">// 08 — Contact</span>
     <h2 class="sec-h">Travaillons <em>ensemble</em></h2>
     <div class="rule"></div>
   </div>
@@ -1339,7 +1482,14 @@ footer .f-logo em{color:var(--violet);font-style:italic;}
           <div class="c-icon">📍</div>
           <div>
             <div class="c-label">Localisation</div>
-            <div class="c-val">Martinique, France</div>
+            <div class="c-val">Fort-de-France, Martinique</div>
+          </div>
+        </div>
+        <div class="c-row">
+          <div class="c-icon">📞</div>
+          <div>
+            <div class="c-label">Téléphone</div>
+            <div class="c-val"><a href="tel:+596696962983">0696 96 29 83</a></div>
           </div>
         </div>
         <div class="c-row">
