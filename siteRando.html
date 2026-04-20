@@ -1,0 +1,1141 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>À la Découverte de la Martinique — Randonnées</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --vert:#1a5c2a;
+  --vert-light:#2d8a42;
+  --vert-pale:#e8f5eb;
+  --rose:#d4547a;
+  --rose-light:#f0a0bb;
+  --rose-pale:#fdeef4;
+  --or:#c9963a;
+  --or-light:#f0c46a;
+  --blanc:#fafaf7;
+  --texte:#1a1a1a;
+  --texte-muted:#5a6a55;
+  --shadow-sm:0 2px 12px rgba(0,0,0,.06);
+  --shadow-md:0 4px 24px rgba(0,0,0,.10);
+  --shadow-lg:0 12px 40px rgba(26,92,42,.18);
+}
+html{scroll-behavior:smooth}
+body{font-family:'DM Sans',sans-serif;background:var(--blanc);color:var(--texte);overflow-x:hidden;line-height:1.6}
+
+/* ══════════════════════════════
+   SPLASH SCREEN
+══════════════════════════════ */
+#splash{
+  position:fixed;inset:0;z-index:9999;
+  background:linear-gradient(155deg,#071f0d 0%,#0e3d1a 35%,#1a5c2a 65%,#0a2e14 100%);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  transition:opacity .9s ease,transform .9s ease;
+  overflow:hidden;
+}
+#splash::before{
+  content:'';position:absolute;inset:0;
+  background-image:radial-gradient(circle at 20% 80%,rgba(212,84,122,.15) 0%,transparent 50%),
+                   radial-gradient(circle at 80% 20%,rgba(201,150,58,.12) 0%,transparent 50%);
+}
+#splash::after{
+  content:'';position:absolute;inset:0;
+  background-image:radial-gradient(circle,rgba(255,255,255,.04) 1px,transparent 1px);
+  background-size:40px 40px;
+}
+#splash.hide{opacity:0;transform:scale(1.05);pointer-events:none}
+
+.splash-flower{
+  width:150px;height:150px;margin-bottom:28px;
+  animation:spinIn 1.3s cubic-bezier(.22,1,.36,1) both;
+  position:relative;z-index:2;
+  filter:drop-shadow(0 0 32px rgba(212,84,122,.4));
+}
+@keyframes spinIn{
+  from{opacity:0;transform:rotate(-45deg) scale(.3)}
+  to{opacity:1;transform:rotate(0) scale(1)}
+}
+
+.splash-title{
+  font-family:'Playfair Display',serif;
+  font-size:clamp(30px,5.5vw,54px);
+  color:#fff;text-align:center;line-height:1.1;letter-spacing:-.5px;
+  animation:fadeUp .9s .5s both;
+  position:relative;z-index:2;
+}
+.splash-title em{color:var(--rose-light);font-style:italic}
+
+.splash-subtitle{
+  font-size:12px;letter-spacing:3.5px;text-transform:uppercase;
+  color:rgba(240,196,106,.85);margin-top:14px;
+  animation:fadeUp .9s .7s both;text-align:center;
+  position:relative;z-index:2;
+}
+
+.splash-divider{
+  width:60px;height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,.3),transparent);
+  margin:28px auto;animation:fadeUp .9s .85s both;position:relative;z-index:2;
+}
+
+.splash-lang{
+  display:flex;gap:10px;margin-bottom:28px;
+  animation:fadeUp .9s .9s both;position:relative;z-index:2;
+}
+.splash-lang button{
+  padding:9px 22px;border-radius:50px;
+  border:1.5px solid rgba(255,255,255,.25);
+  background:rgba(255,255,255,.07);color:rgba(255,255,255,.9);
+  font-size:13px;font-family:'DM Sans',sans-serif;
+  cursor:pointer;transition:all .22s;letter-spacing:.5px;backdrop-filter:blur(8px);
+}
+.splash-lang button:hover,.splash-lang button.active{
+  background:var(--rose);border-color:var(--rose);
+  transform:translateY(-2px);box-shadow:0 6px 20px rgba(212,84,122,.4);
+}
+
+.splash-enter{
+  padding:16px 44px;border-radius:50px;
+  background:linear-gradient(135deg,var(--or) 0%,var(--or-light) 100%);
+  color:#1a1a1a;font-weight:500;font-size:15px;border:none;cursor:pointer;
+  font-family:'DM Sans',sans-serif;letter-spacing:.3px;
+  animation:fadeUp .9s 1.1s both;
+  transition:transform .22s,box-shadow .22s;
+  box-shadow:0 6px 28px rgba(201,150,58,.45);
+  position:relative;z-index:2;
+}
+.splash-enter:hover{transform:translateY(-4px);box-shadow:0 12px 36px rgba(201,150,58,.55)}
+
+@keyframes fadeUp{
+  from{opacity:0;transform:translateY(22px)}
+  to{opacity:1;transform:translateY(0)}
+}
+
+/* ══════════════════════════════
+   NAVIGATION
+══════════════════════════════ */
+nav{
+  position:sticky;top:0;z-index:100;
+  background:rgba(250,250,247,.93);backdrop-filter:blur(16px);
+  border-bottom:1px solid rgba(26,92,42,.10);
+  padding:0 clamp(16px,4vw,52px);
+  display:flex;align-items:center;gap:16px;height:62px;
+  display:none;
+}
+.nav-logo{
+  font-family:'Playfair Display',serif;font-size:19px;
+  color:var(--vert);font-style:italic;white-space:nowrap;
+  display:flex;align-items:center;gap:8px;
+}
+.nav-logo-dot{
+  width:8px;height:8px;border-radius:50%;
+  background:var(--rose);flex-shrink:0;
+}
+.nav-links{
+  display:flex;gap:2px;flex:1;overflow-x:auto;scrollbar-width:none;
+}
+.nav-links::-webkit-scrollbar{display:none}
+.nav-btn{
+  padding:7px 15px;border-radius:50px;border:none;background:transparent;
+  font-size:13px;font-family:'DM Sans',sans-serif;color:var(--texte-muted);
+  cursor:pointer;transition:all .18s;white-space:nowrap;font-weight:400;
+}
+.nav-btn:hover{background:var(--vert-pale);color:var(--vert)}
+.nav-btn.active{background:var(--vert);color:#fff;font-weight:500}
+
+.nav-lang{display:flex;gap:4px;margin-left:auto;flex-shrink:0}
+.lang-btn{
+  padding:5px 11px;border-radius:20px;
+  border:1px solid rgba(26,92,42,.15);
+  background:transparent;font-size:12px;cursor:pointer;
+  font-family:'DM Sans',sans-serif;color:var(--texte-muted);
+  transition:all .18s;font-weight:500;
+}
+.lang-btn:hover{border-color:var(--vert);color:var(--vert)}
+.lang-btn.active{background:var(--vert);color:#fff;border-color:var(--vert)}
+
+/* ══════════════════════════════
+   SECTIONS
+══════════════════════════════ */
+.section{padding:72px clamp(20px,6vw,80px);display:none}
+.section.active{display:block}
+
+.section-header{margin-bottom:52px}
+.section-eyebrow{
+  font-size:11px;letter-spacing:3.5px;text-transform:uppercase;
+  color:var(--rose);font-weight:500;margin-bottom:12px;display:block;
+}
+.section-title{
+  font-family:'Playfair Display',serif;
+  font-size:clamp(30px,4.5vw,46px);
+  color:var(--vert);line-height:1.15;
+}
+.section-desc{
+  margin-top:14px;color:var(--texte-muted);font-size:15px;
+  line-height:1.75;max-width:620px;
+}
+
+/* ══════════════════════════════
+   HERO
+══════════════════════════════ */
+#accueil{padding:0}
+.hero{
+  min-height:88vh;
+  background:linear-gradient(155deg,#071f0d 0%,#0e3d1a 40%,#1a5c2a 70%,#153d1e 100%);
+  position:relative;overflow:hidden;
+  display:flex;align-items:center;
+  padding:80px clamp(24px,6vw,100px);
+}
+.hero-dots{
+  position:absolute;inset:0;
+  background-image:radial-gradient(circle,rgba(255,255,255,.05) 1px,transparent 1px);
+  background-size:36px 36px;
+}
+.hero-glow{
+  position:absolute;right:-100px;top:-100px;
+  width:600px;height:600px;border-radius:50%;
+  background:radial-gradient(circle,rgba(212,84,122,.12) 0%,transparent 70%);
+  pointer-events:none;
+}
+.hero-glow2{
+  position:absolute;left:-80px;bottom:-80px;
+  width:500px;height:500px;border-radius:50%;
+  background:radial-gradient(circle,rgba(201,150,58,.10) 0%,transparent 70%);
+  pointer-events:none;
+}
+.hero-content{position:relative;z-index:2;max-width:620px}
+
+.hero-badge{
+  display:inline-flex;align-items:center;gap:10px;
+  padding:7px 18px;border-radius:50px;
+  background:rgba(201,150,58,.18);border:1px solid rgba(201,150,58,.35);
+  color:var(--or-light);font-size:12px;letter-spacing:2.5px;text-transform:uppercase;
+  margin-bottom:28px;
+}
+
+.hero-title{
+  font-family:'Playfair Display',serif;
+  font-size:clamp(40px,6.5vw,72px);color:#fff;line-height:1.06;
+  margin-bottom:22px;
+}
+.hero-title em{color:var(--rose-light);font-style:italic}
+
+.hero-sub{
+  color:rgba(255,255,255,.70);font-size:clamp(15px,2vw,18px);
+  line-height:1.7;margin-bottom:40px;max-width:500px;
+}
+
+.hero-ctas{display:flex;gap:14px;flex-wrap:wrap}
+.btn-primary{
+  padding:15px 32px;border-radius:50px;
+  background:linear-gradient(135deg,var(--rose),#e8789a);
+  color:#fff;font-weight:500;font-size:14px;border:none;cursor:pointer;
+  font-family:'DM Sans',sans-serif;transition:all .22s;
+  box-shadow:0 6px 24px rgba(212,84,122,.38);letter-spacing:.2px;
+}
+.btn-primary:hover{transform:translateY(-3px);box-shadow:0 10px 32px rgba(212,84,122,.5)}
+.btn-secondary{
+  padding:15px 32px;border-radius:50px;
+  background:rgba(255,255,255,.08);border:1.5px solid rgba(255,255,255,.28);
+  color:#fff;font-size:14px;cursor:pointer;
+  font-family:'DM Sans',sans-serif;transition:all .22s;backdrop-filter:blur(8px);
+}
+.btn-secondary:hover{background:rgba(255,255,255,.16);transform:translateY(-3px)}
+
+.hero-stats{
+  display:flex;gap:40px;margin-top:56px;padding-top:40px;
+  border-top:1px solid rgba(255,255,255,.10);flex-wrap:wrap;
+}
+.stat .stat-n{
+  font-family:'Playfair Display',serif;font-size:40px;
+  color:var(--or-light);line-height:1;
+}
+.stat .stat-l{
+  font-size:12px;color:rgba(255,255,255,.50);
+  margin-top:6px;letter-spacing:.8px;text-transform:uppercase;
+}
+
+/* ══════════════════════════════
+   COMMUNES
+══════════════════════════════ */
+.legend{display:flex;flex-wrap:wrap;gap:14px;margin-bottom:28px}
+.leg-item{display:flex;align-items:center;gap:7px;font-size:13px;color:var(--texte-muted)}
+.leg-dot{width:11px;height:11px;border-radius:50%;flex-shrink:0}
+
+.communes-grid{
+  display:grid;grid-template-columns:repeat(auto-fill,minmax(155px,1fr));gap:14px;
+}
+.commune-card{
+  padding:18px;border-radius:18px;border:1.5px solid rgba(26,92,42,.08);
+  cursor:pointer;transition:all .22s;background:#fff;
+  box-shadow:var(--shadow-sm);position:relative;overflow:hidden;
+}
+.commune-card::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:3px;
+}
+.commune-card.nord::before{background:var(--vert-light)}
+.commune-card.sud::before{background:var(--rose)}
+.commune-card.centre::before{background:var(--or)}
+.commune-card.caraibe::before{background:#3b82c4}
+.commune-card.atlantique::before{background:#7c4bab}
+.commune-card:hover{
+  transform:translateY(-4px);
+  box-shadow:var(--shadow-lg);
+  border-color:rgba(26,92,42,.2);
+}
+.commune-icon{font-size:26px;margin-bottom:10px}
+.commune-name{font-weight:500;font-size:14px;color:var(--texte);margin-bottom:4px}
+.commune-zone{font-size:11px;color:var(--texte-muted);letter-spacing:.5px;text-transform:uppercase}
+.commune-trails{font-size:12px;color:var(--vert-light);margin-top:8px;font-weight:500}
+
+/* ══════════════════════════════
+   RANDONNÉES
+══════════════════════════════ */
+.filter-bar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:36px}
+.filter-btn{
+  padding:8px 20px;border-radius:50px;
+  border:1.5px solid rgba(26,92,42,.15);
+  background:transparent;font-size:13px;cursor:pointer;
+  font-family:'DM Sans',sans-serif;color:var(--texte-muted);
+  transition:all .18s;font-weight:400;
+}
+.filter-btn:hover{border-color:var(--vert);color:var(--vert);background:var(--vert-pale)}
+.filter-btn.active{background:var(--vert);color:#fff;border-color:var(--vert)}
+
+.rando-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:22px}
+.rando-card{
+  background:#fff;border-radius:22px;overflow:hidden;
+  box-shadow:var(--shadow-sm);transition:all .26s;cursor:pointer;
+  border:1px solid rgba(26,92,42,.06);
+}
+.rando-card:hover{transform:translateY(-6px);box-shadow:var(--shadow-lg)}
+
+.rando-img{
+  height:168px;display:flex;align-items:center;justify-content:center;
+  font-size:56px;position:relative;overflow:hidden;
+}
+.rando-img::after{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(to bottom,transparent 50%,rgba(0,0,0,.25) 100%);
+}
+.rando-img.vert{background:linear-gradient(145deg,#0e3d1a,#2d8a42)}
+.rando-img.rose{background:linear-gradient(145deg,#6b1030,#d4547a)}
+.rando-img.or{background:linear-gradient(145deg,#5a3d0a,#c9963a)}
+.rando-img.bleu{background:linear-gradient(145deg,#0d2444,#3b82c4)}
+.rando-img.violet{background:linear-gradient(145deg,#2a0d4e,#7c4bab)}
+
+.rando-body{padding:20px}
+.rando-diff{
+  display:inline-block;padding:4px 12px;border-radius:20px;
+  font-size:11px;font-weight:600;margin-bottom:12px;letter-spacing:.8px;text-transform:uppercase;
+}
+.diff-facile{background:#e8f5eb;color:#1a5c2a}
+.diff-moyen{background:#fff8e6;color:#8a6020}
+.diff-difficile{background:#fde8ee;color:#8b2043}
+
+.rando-name{
+  font-family:'Playfair Display',serif;font-size:19px;
+  color:var(--vert);margin-bottom:7px;line-height:1.3;
+}
+.rando-commune{font-size:13px;color:var(--texte-muted);margin-bottom:14px}
+.rando-meta{display:flex;gap:16px;font-size:12px;color:var(--texte-muted);flex-wrap:wrap}
+.rando-meta span{display:flex;align-items:center;gap:4px;font-weight:500}
+
+/* ══════════════════════════════
+   PANORAMAS
+══════════════════════════════ */
+.pano-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(310px,1fr));gap:22px}
+.pano-card{
+  border-radius:22px;overflow:hidden;position:relative;
+  height:230px;cursor:pointer;transition:transform .26s;
+  display:flex;align-items:flex-end;
+}
+.pano-card:hover{transform:scale(1.025)}
+.pano-bg{
+  position:absolute;inset:0;display:flex;
+  align-items:center;justify-content:center;font-size:70px;
+}
+.pano-bg.p1{background:linear-gradient(155deg,#071f0d,#1a5c2a,#2d8a42)}
+.pano-bg.p2{background:linear-gradient(155deg,#0d1828,#1a3a6e,#3b82c4)}
+.pano-bg.p3{background:linear-gradient(155deg,#2a0e05,#7a3a1a,#c97040)}
+.pano-bg.p4{background:linear-gradient(155deg,#190a2e,#3d1a6e,#7c4bab)}
+.pano-bg.p5{background:linear-gradient(155deg,#071828,#1a3a7a,#4a90d4)}
+.pano-bg.p6{background:linear-gradient(155deg,#1a0e05,#5a3a1a,#a06830)}
+.pano-overlay{
+  position:absolute;inset:0;
+  background:linear-gradient(transparent 40%,rgba(0,0,0,.65) 100%);
+}
+.pano-info{
+  position:relative;z-index:2;padding:20px;width:100%;
+}
+.pano-name{font-family:'Playfair Display',serif;font-size:18px;color:#fff;margin-bottom:4px}
+.pano-altitude{font-size:12px;color:rgba(255,255,255,.72);letter-spacing:.3px}
+
+/* ══════════════════════════════
+   MÉTÉO
+══════════════════════════════ */
+.meteo-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:16px;margin-bottom:28px}
+.meteo-card{
+  background:#fff;border-radius:20px;padding:22px;text-align:center;
+  box-shadow:var(--shadow-sm);transition:transform .2s;
+  border:1px solid rgba(26,92,42,.06);
+}
+.meteo-card:hover{transform:translateY(-3px);box-shadow:var(--shadow-md)}
+.meteo-icon{font-size:44px;margin-bottom:10px}
+.meteo-ville{font-weight:500;font-size:14px;color:var(--texte);margin-bottom:4px}
+.meteo-temp{font-family:'Playfair Display',serif;font-size:36px;color:var(--vert)}
+.meteo-desc{font-size:12px;color:var(--texte-muted);margin-top:4px}
+.meteo-details{display:flex;justify-content:center;gap:16px;margin-top:14px;font-size:12px;color:var(--texte-muted);font-weight:500}
+
+.meteo-conseils{
+  background:linear-gradient(135deg,var(--vert-pale),var(--rose-pale));
+  border-radius:22px;padding:28px 32px;margin-top:8px;
+}
+.meteo-conseils h3{
+  font-family:'Playfair Display',serif;color:var(--vert);
+  margin-bottom:16px;font-size:22px;
+}
+.meteo-conseils ul{list-style:none;font-size:14px;color:var(--texte-muted);line-height:2.2}
+
+/* ══════════════════════════════
+   RESSOURCES
+══════════════════════════════ */
+.ressources-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(310px,1fr));gap:20px}
+.res-card{
+  background:#fff;border-radius:22px;padding:26px;
+  box-shadow:var(--shadow-sm);transition:all .22s;
+  border:1.5px solid transparent;
+}
+.res-card:hover{
+  border-color:var(--rose);
+  transform:translateY(-4px);
+  box-shadow:var(--shadow-md);
+}
+.res-icon{font-size:36px;margin-bottom:14px}
+.res-name{font-family:'Playfair Display',serif;font-size:19px;color:var(--vert);margin-bottom:8px}
+.res-desc{font-size:13px;color:var(--texte-muted);line-height:1.7;margin-bottom:18px}
+.res-link{
+  display:inline-flex;align-items:center;gap:7px;
+  color:var(--rose);font-size:13px;font-weight:500;text-decoration:none;
+  padding:9px 18px;border-radius:20px;background:var(--rose-pale);
+  transition:all .18s;
+}
+.res-link:hover{background:var(--rose);color:#fff;transform:translateX(2px)}
+
+/* ══════════════════════════════
+   MODAL
+══════════════════════════════ */
+.modal-overlay{
+  position:fixed;inset:0;z-index:500;
+  background:rgba(7,31,13,.55);backdrop-filter:blur(6px);
+  display:none;align-items:center;justify-content:center;padding:24px;
+}
+.modal-overlay.open{display:flex}
+.modal{
+  background:#fff;border-radius:28px;padding:36px;
+  max-width:500px;width:100%;position:relative;
+  animation:modalIn .3s cubic-bezier(.22,1,.36,1);
+  max-height:90vh;overflow-y:auto;
+}
+@keyframes modalIn{
+  from{opacity:0;transform:translateY(24px) scale(.96)}
+  to{opacity:1;transform:none}
+}
+.modal-close{
+  position:absolute;top:18px;right:18px;width:34px;height:34px;
+  border-radius:50%;border:none;background:var(--vert-pale);
+  cursor:pointer;font-size:16px;color:var(--vert);
+  transition:background .18s;display:flex;align-items:center;justify-content:center;
+}
+.modal-close:hover{background:var(--vert);color:#fff}
+.modal-icon{font-size:52px;margin-bottom:18px}
+.modal-title{
+  font-family:'Playfair Display',serif;font-size:26px;
+  color:var(--vert);margin-bottom:6px;
+}
+.modal-commune{font-size:14px;color:var(--texte-muted);margin-bottom:22px}
+.modal-info{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:22px}
+.modal-info-item{background:var(--vert-pale);border-radius:14px;padding:14px;text-align:center}
+.modal-info-item .val{font-weight:600;font-size:17px;color:var(--vert)}
+.modal-info-item .lbl{font-size:11px;color:var(--texte-muted);margin-top:3px;letter-spacing:.5px}
+.modal-desc{font-size:14px;color:var(--texte-muted);line-height:1.75;margin-bottom:20px}
+.modal-tips{background:var(--rose-pale);border-radius:14px;padding:18px}
+.modal-tips-title{font-size:13px;font-weight:600;color:var(--rose);margin-bottom:10px;letter-spacing:.5px;text-transform:uppercase}
+.modal-tips ul{list-style:none;font-size:13px;color:var(--texte-muted);line-height:2}
+.modal-tips ul li::before{content:"🌺 "}
+
+/* ══════════════════════════════
+   FOOTER
+══════════════════════════════ */
+footer{
+  background:linear-gradient(155deg,#071f0d,#0e3d1a,#1a5c2a);
+  color:rgba(255,255,255,.7);
+  padding:56px clamp(24px,6vw,80px);
+  text-align:center;display:none;
+  position:relative;overflow:hidden;
+}
+footer::before{
+  content:'';position:absolute;inset:0;
+  background-image:radial-gradient(circle,rgba(255,255,255,.03) 1px,transparent 1px);
+  background-size:32px 32px;
+}
+.footer-flower{font-size:44px;margin-bottom:18px;position:relative;z-index:2}
+.footer-title{
+  font-family:'Playfair Display',serif;font-size:26px;
+  color:#fff;margin-bottom:10px;font-style:italic;position:relative;z-index:2;
+}
+.footer-sub{
+  font-size:12px;color:rgba(255,255,255,.45);letter-spacing:1.5px;
+  position:relative;z-index:2;
+}
+.footer-links{
+  display:flex;justify-content:center;gap:24px;margin-top:28px;
+  flex-wrap:wrap;position:relative;z-index:2;
+}
+.footer-links a{
+  color:rgba(255,255,255,.55);font-size:13px;text-decoration:none;
+  transition:color .18s;letter-spacing:.3px;
+}
+.footer-links a:hover{color:var(--or-light)}
+.footer-line{
+  width:60px;height:1px;
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,.2),transparent);
+  margin:28px auto 0;position:relative;z-index:2;
+}
+.footer-credit{
+  margin-top:14px;font-size:11px;color:rgba(255,255,255,.3);
+  letter-spacing:1px;text-transform:uppercase;position:relative;z-index:2;
+}
+</style>
+</head>
+<body>
+
+<!-- ════════════════════════════════════
+     SPLASH SCREEN
+════════════════════════════════════ -->
+<div id="splash">
+  <svg class="splash-flower" viewBox="0 0 150 150" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <ellipse cx="75" cy="34" rx="20" ry="34" fill="#d4547a" opacity=".88" transform="rotate(0 75 75)"/>
+    <ellipse cx="75" cy="34" rx="20" ry="34" fill="#e888aa" opacity=".65" transform="rotate(45 75 75)"/>
+    <ellipse cx="75" cy="34" rx="20" ry="34" fill="#d4547a" opacity=".88" transform="rotate(90 75 75)"/>
+    <ellipse cx="75" cy="34" rx="20" ry="34" fill="#e888aa" opacity=".65" transform="rotate(135 75 75)"/>
+    <ellipse cx="75" cy="34" rx="20" ry="34" fill="#d4547a" opacity=".88" transform="rotate(180 75 75)"/>
+    <ellipse cx="75" cy="34" rx="20" ry="34" fill="#e888aa" opacity=".65" transform="rotate(225 75 75)"/>
+    <ellipse cx="75" cy="34" rx="20" ry="34" fill="#d4547a" opacity=".88" transform="rotate(270 75 75)"/>
+    <ellipse cx="75" cy="34" rx="20" ry="34" fill="#e888aa" opacity=".65" transform="rotate(315 75 75)"/>
+    <circle cx="75" cy="75" r="20" fill="#c9963a"/>
+    <circle cx="75" cy="75" r="12" fill="#f0c46a"/>
+    <circle cx="75" cy="75" r="5" fill="#fff" opacity=".6"/>
+  </svg>
+
+  <div class="splash-title">
+    À la <em>Découverte</em><br>de la Martinique
+  </div>
+  <div class="splash-subtitle">L'Île aux Fleurs · The Island of Flowers · Zîle-an Fléz</div>
+
+  <div class="splash-divider"></div>
+
+  <div class="splash-lang">
+    <button class="active" onclick="setLangSplash('fr',this)">🇫🇷 Français</button>
+    <button onclick="setLangSplash('en',this)">🇬🇧 English</button>
+    <button onclick="setLangSplash('cr',this)">🌺 Kréyòl</button>
+  </div>
+
+  <button class="splash-enter" onclick="enterApp()">
+    <span id="splash-btn-text">Commencer l'exploration →</span>
+  </button>
+</div>
+
+<!-- ════════════════════════════════════
+     NAVIGATION
+════════════════════════════════════ -->
+<nav id="main-nav">
+  <div class="nav-logo">
+    <div class="nav-logo-dot"></div>
+    Martinique
+  </div>
+  <div class="nav-links">
+    <button class="nav-btn active" onclick="showSection('accueil',this)"
+      data-fr="🏠 Accueil" data-en="🏠 Home" data-cr="🏠 Akèy">🏠 Accueil</button>
+    <button class="nav-btn" onclick="showSection('communes',this)"
+      data-fr="🗺️ Communes" data-en="🗺️ Towns" data-cr="🗺️ Komin">🗺️ Communes</button>
+    <button class="nav-btn" onclick="showSection('randonnees',this)"
+      data-fr="🥾 Randonnées" data-en="🥾 Hikes" data-cr="🥾 Randonnée">🥾 Randonnées</button>
+    <button class="nav-btn" onclick="showSection('panoramas',this)"
+      data-fr="🏔️ Panoramas" data-en="🏔️ Viewpoints" data-cr="🏔️ Panorama">🏔️ Panoramas</button>
+    <button class="nav-btn" onclick="showSection('meteo',this)"
+      data-fr="🌤️ Météo" data-en="🌤️ Weather" data-cr="🌤️ Tan">🌤️ Météo</button>
+    <button class="nav-btn" onclick="showSection('ressources',this)"
+      data-fr="🔗 Ressources" data-en="🔗 Resources" data-cr="🔗 Resous">🔗 Ressources</button>
+  </div>
+  <div class="nav-lang">
+    <button class="lang-btn active" onclick="setLangApp('fr',this)">FR</button>
+    <button class="lang-btn" onclick="setLangApp('en',this)">EN</button>
+    <button class="lang-btn" onclick="setLangApp('cr',this)">KR</button>
+  </div>
+</nav>
+
+<!-- ════════════════════════════════════
+     ACCUEIL
+════════════════════════════════════ -->
+<section id="accueil" class="section active">
+  <div class="hero">
+    <div class="hero-dots"></div>
+    <div class="hero-glow"></div>
+    <div class="hero-glow2"></div>
+    <div class="hero-content">
+      <div class="hero-badge">
+        🌺 <span data-fr="L'Île aux Fleurs" data-en="The Island of Flowers" data-cr="Zîle-an Fléz">L'Île aux Fleurs</span>
+      </div>
+      <h1 class="hero-title">
+        À la <em>Découverte</em><br>
+        <span data-fr="de la Martinique" data-en="of Martinique" data-cr="Matinik">de la Martinique</span>
+      </h1>
+      <p class="hero-sub"
+        data-fr="Explorez les 34 communes, les sentiers secrets et les panoramas époustouflants de la plus belle île des Caraïbes."
+        data-en="Explore 34 towns, secret trails and breathtaking panoramas of the most beautiful island in the Caribbean."
+        data-cr="Exploré 34 komin, chimen sekrè épi panorama bon dié ki la Matinik.">
+        Explorez les 34 communes, les sentiers secrets et les panoramas époustouflants de la plus belle île des Caraïbes.
+      </p>
+      <div class="hero-ctas">
+        <button class="btn-primary" onclick="showSection('randonnees',document.querySelectorAll('.nav-btn')[2])">
+          🥾 <span data-fr="Explorer les randonnées" data-en="Explore hikes" data-cr="Exploré randonnée">Explorer les randonnées</span>
+        </button>
+        <button class="btn-secondary" onclick="showSection('communes',document.querySelectorAll('.nav-btn')[1])">
+          🗺️ <span data-fr="Toutes les communes" data-en="All towns" data-cr="Tout komin">Toutes les communes</span>
+        </button>
+      </div>
+      <div class="hero-stats">
+        <div class="stat">
+          <div class="stat-n">34</div>
+          <div class="stat-l" data-fr="Communes" data-en="Towns" data-cr="Komin">Communes</div>
+        </div>
+        <div class="stat">
+          <div class="stat-n">60+</div>
+          <div class="stat-l" data-fr="Randonnées" data-en="Trails" data-cr="Santye">Randonnées</div>
+        </div>
+        <div class="stat">
+          <div class="stat-n">1397m</div>
+          <div class="stat-l" data-fr="Montagne Pelée" data-en="Mount Pelée" data-cr="Mòn Pelé">Montagne Pelée</div>
+        </div>
+        <div class="stat">
+          <div class="stat-n">5</div>
+          <div class="stat-l" data-fr="Zones géographiques" data-en="Geographic zones" data-cr="Zòn jéo">Zones géographiques</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════
+     COMMUNES
+════════════════════════════════════ -->
+<section id="communes" class="section">
+  <div class="section-header">
+    <span class="section-eyebrow" data-fr="🗺️ Exploration" data-en="🗺️ Exploration" data-cr="🗺️ Eksplorasyon">🗺️ Exploration</span>
+    <h2 class="section-title" data-fr="Les 34 Communes" data-en="The 34 Towns" data-cr="34 Komin-an">Les 34 Communes</h2>
+    <p class="section-desc"
+      data-fr="Cliquez sur une commune pour découvrir ses randonnées et points d'intérêt. Chaque commune offre une expérience unique entre nature, histoire et culture créole."
+      data-en="Click a town to discover its trails and points of interest. Each town offers a unique experience between nature, history and Creole culture."
+      data-cr="Kliké asou yon komin pou dékouvè chimen épi pwen entérè. Chak komin ban nou yon ekspéryans inik ant nati, listwa épi kilti kréyòl.">
+      Cliquez sur une commune pour découvrir ses randonnées et points d'intérêt. Chaque commune offre une expérience unique entre nature, histoire et culture créole.
+    </p>
+  </div>
+
+  <div class="legend">
+    <div class="leg-item"><div class="leg-dot" style="background:#2d8a42"></div>
+      <span data-fr="Nord" data-en="North" data-cr="Nò">Nord</span></div>
+    <div class="leg-item"><div class="leg-dot" style="background:#d4547a"></div>
+      <span data-fr="Sud" data-en="South" data-cr="Sid">Sud</span></div>
+    <div class="leg-item"><div class="leg-dot" style="background:#c9963a"></div>
+      <span data-fr="Centre" data-en="Center" data-cr="Sant">Centre</span></div>
+    <div class="leg-item"><div class="leg-dot" style="background:#3b82c4"></div>
+      <span data-fr="Caraïbe" data-en="Caribbean" data-cr="Karayib">Caraïbe</span></div>
+    <div class="leg-item"><div class="leg-dot" style="background:#7c4bab"></div>
+      <span data-fr="Atlantique" data-en="Atlantic" data-cr="Atlantik">Atlantique</span></div>
+  </div>
+
+  <div class="communes-grid" id="communes-grid"></div>
+</section>
+
+<!-- ════════════════════════════════════
+     RANDONNÉES
+════════════════════════════════════ -->
+<section id="randonnees" class="section">
+  <div class="section-header">
+    <span class="section-eyebrow">🥾 Sentiers &amp; Chemins</span>
+    <h2 class="section-title" data-fr="Toutes les Randonnées" data-en="All Hikes" data-cr="Tout Randonnée-a">Toutes les Randonnées</h2>
+    <p class="section-desc"
+      data-fr="Du bord de mer aux sommets volcaniques, la Martinique offre des paysages exceptionnels pour tous les niveaux. Choisissez votre aventure."
+      data-en="From sea level to volcanic summits, Martinique offers exceptional landscapes for all levels. Choose your adventure."
+      data-cr="Dépi bo lanmè jis anlè vòlkan, Matinik ban nou péyzaj eksepsyonèl pou tout nivo. Chwazi'w aventir.">
+      Du bord de mer aux sommets volcaniques, la Martinique offre des paysages exceptionnels pour tous les niveaux.
+    </p>
+  </div>
+  <div class="filter-bar" id="filter-bar">
+    <button class="filter-btn active" onclick="filterRando('tout',this)"
+      data-fr="✦ Tout" data-en="✦ All" data-cr="✦ Tout">✦ Tout</button>
+    <button class="filter-btn" onclick="filterRando('facile',this)"
+      data-fr="🟢 Facile" data-en="🟢 Easy" data-cr="🟢 Fasil">🟢 Facile</button>
+    <button class="filter-btn" onclick="filterRando('moyen',this)"
+      data-fr="🟡 Moyen" data-en="🟡 Moderate" data-cr="🟡 Mwayen">🟡 Moyen</button>
+    <button class="filter-btn" onclick="filterRando('difficile',this)"
+      data-fr="🔴 Difficile" data-en="🔴 Hard" data-cr="🔴 Difisil">🔴 Difficile</button>
+    <button class="filter-btn" onclick="filterRando('nord',this)"
+      data-fr="🌋 Nord" data-en="🌋 North" data-cr="🌋 Nò">🌋 Nord</button>
+    <button class="filter-btn" onclick="filterRando('sud',this)"
+      data-fr="🏝️ Sud" data-en="🏝️ South" data-cr="🏝️ Sid">🏝️ Sud</button>
+    <button class="filter-btn" onclick="filterRando('panorama',this)"
+      data-fr="🏔️ Panorama" data-en="🏔️ Viewpoint" data-cr="🏔️ Panorama">🏔️ Panorama</button>
+    <button class="filter-btn" onclick="filterRando('foret',this)"
+      data-fr="🌿 Forêt" data-en="🌿 Forest" data-cr="🌿 Forè">🌿 Forêt</button>
+  </div>
+  <div class="rando-grid" id="rando-grid"></div>
+</section>
+
+<!-- ════════════════════════════════════
+     PANORAMAS
+════════════════════════════════════ -->
+<section id="panoramas" class="section">
+  <div class="section-header">
+    <span class="section-eyebrow">🏔️ Points de vue</span>
+    <h2 class="section-title" data-fr="Panoramas Exceptionnels" data-en="Exceptional Viewpoints" data-cr="Panorama Ekstraodinè">Panoramas Exceptionnels</h2>
+    <p class="section-desc"
+      data-fr="Les plus beaux points de vue de l'île, entre volcans majestueux, forêts tropicales et mer des Caraïbes. Des instants d'éternité."
+      data-en="The most beautiful viewpoints on the island, between majestic volcanoes, tropical forests and the Caribbean Sea. Moments of eternity."
+      data-cr="Pi bèl panorama zîle-a, ant vòlkan majestueux, forè twopical épi lanmè Karayib. Moman d'étènité.">
+      Les plus beaux points de vue de l'île, entre volcans majestueux, forêts tropicales et mer des Caraïbes.
+    </p>
+  </div>
+  <div class="pano-grid" id="pano-grid"></div>
+</section>
+
+<!-- ════════════════════════════════════
+     MÉTÉO
+════════════════════════════════════ -->
+<section id="meteo" class="section">
+  <div class="section-header">
+    <span class="section-eyebrow">🌤️ Conditions météorologiques</span>
+    <h2 class="section-title" data-fr="Météo des Randonnées" data-en="Trail Weather" data-cr="Tan Randonnée">Météo des Randonnées</h2>
+    <p class="section-desc"
+      data-fr="Consultez les conditions météo avant de partir en randonnée. Le temps peut changer rapidement en montagne, préparez-vous bien."
+      data-en="Check weather conditions before hiking. Weather can change quickly in the mountains, be well prepared."
+      data-cr="Vérifié kondisyon tan avan ou pati randonnée. Tan ka chanjé vit anlè mòn, préparé'w bien.">
+      Consultez les conditions météo avant de partir en randonnée.
+    </p>
+  </div>
+  <div class="meteo-grid" id="meteo-grid"></div>
+  <div class="meteo-conseils">
+    <h3 data-fr="🌺 Conseils Saisonniers" data-en="🌺 Seasonal Tips" data-cr="🌺 Konsèy Sèzonye">🌺 Conseils Saisonniers</h3>
+    <ul id="meteo-tips">
+      <li data-fr="☀️ Saison sèche (janvier–avril) : idéale pour les randonnées en montagne et les sommets" data-en="☀️ Dry season (Jan–Apr): ideal for mountain hiking and summits" data-cr="☀️ Sèzon sèch (janvyé–avril) : idéal pou randonnée anlè mòn épi sòmè">☀️ Saison sèche (janvier–avril) : idéale pour les randonnées en montagne et les sommets</li>
+      <li data-fr="🌧️ Saison des pluies (juin–novembre) : préférez les côtes et partez le matin" data-en="🌧️ Rainy season (Jun–Nov): prefer coasts and leave in the morning" data-cr="🌧️ Sèzon lapli (jwen–novanm) : préféré bòdmè épi pati maten">🌧️ Saison des pluies (juin–novembre) : préférez les côtes et partez le matin</li>
+      <li data-fr="🌡️ Température moyenne : 26–30°C en plaine, 18–22°C en montagne" data-en="🌡️ Average temp: 26–30°C on coast, 18–22°C in mountains" data-cr="🌡️ Tanperati mwayen : 26–30°C an plèn, 18–22°C anlè mòn">🌡️ Température moyenne : 26–30°C en plaine, 18–22°C en montagne</li>
+      <li data-fr="⚠️ La Montagne Pelée peut être dans les nuages même par beau temps en plaine" data-en="⚠️ Mount Pelée can be in clouds even when it's sunny on the coast" data-cr="⚠️ Mòn Pelé ka dan niyaj menm lè tan bon an plèn">⚠️ La Montagne Pelée peut être dans les nuages même par beau temps en plaine</li>
+      <li data-fr="💧 Emportez toujours 1,5L d'eau minimum par randonnée" data-en="💧 Always bring at least 1.5L of water per hike" data-cr="💧 Toujou pran omwen 1,5L dlo pou chak randonnée">💧 Emportez toujours 1,5L d'eau minimum par randonnée</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════
+     RESSOURCES
+════════════════════════════════════ -->
+<section id="ressources" class="section">
+  <div class="section-header">
+    <span class="section-eyebrow">🔗 Liens &amp; Documentation</span>
+    <h2 class="section-title" data-fr="Sites de Recherche" data-en="Research Resources" data-cr="Sit Rechèch">Sites de Recherche</h2>
+    <p class="section-desc"
+      data-fr="Les meilleures sources d'information officielles et communautaires pour planifier et vivre vos randonnées en Martinique."
+      data-en="The best official and community sources to plan and experience your hikes in Martinique."
+      data-cr="Pi bon sous enfòmasyon ofisyèl épi komininotè pou planifié épi viv randonnée'w an Matinik.">
+      Les meilleures sources d'information pour planifier vos randonnées en Martinique.
+    </p>
+  </div>
+  <div class="ressources-grid" id="ressources-grid"></div>
+</section>
+
+<!-- ════════════════════════════════════
+     FOOTER
+════════════════════════════════════ -->
+<footer id="main-footer">
+  <div class="footer-flower">🌺</div>
+  <div class="footer-title" data-fr="À la Découverte de la Martinique" data-en="Discovering Martinique" data-cr="Dékouvè Matinik">À la Découverte de la Martinique</div>
+  <div class="footer-sub" data-fr="Application réalisée pour portfolio professionnel · Martinique 972 · 2025" data-en="Application created for professional portfolio · Martinique 972 · 2025" data-cr="Aplikasyon fèt pou portfolio pwofèsyonèl · Matinik 972 · 2025">Application réalisée pour portfolio professionnel · Martinique 972 · 2025</div>
+  <div class="footer-links">
+    <a href="#" onclick="showSection('accueil',document.querySelectorAll('.nav-btn')[0]);return false">Accueil</a>
+    <a href="#" onclick="showSection('randonnees',document.querySelectorAll('.nav-btn')[2]);return false">Randonnées</a>
+    <a href="#" onclick="showSection('panoramas',document.querySelectorAll('.nav-btn')[3]);return false">Panoramas</a>
+    <a href="#" onclick="showSection('meteo',document.querySelectorAll('.nav-btn')[4]);return false">Météo</a>
+    <a href="#" onclick="showSection('ressources',document.querySelectorAll('.nav-btn')[5]);return false">Ressources</a>
+  </div>
+  <div class="footer-line"></div>
+  <div class="footer-credit">Fait avec 🌺 en Martinique</div>
+</footer>
+
+<!-- ════════════════════════════════════
+     MODAL
+════════════════════════════════════ -->
+<div class="modal-overlay" id="modal-overlay" onclick="closeModal(event)">
+  <div class="modal" id="modal">
+    <button class="modal-close" onclick="closeModal()">✕</button>
+    <div id="modal-content"></div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════
+     JAVASCRIPT
+════════════════════════════════════ -->
+<script>
+let currentLang = 'fr';
+
+/* ── DATA ── */
+const communes = [
+  {name:'Le Morne-Rouge',zone:'nord',trails:4,icon:'🌋',desc:'Au pied de la Montagne Pelée, porte d\'entrée des randonnées volcaniques.'},
+  {name:'Saint-Pierre',zone:'nord',trails:6,icon:'⛵',desc:'La Pompéi des Antilles, ville historique détruite en 1902.'},
+  {name:'Le Prêcheur',zone:'nord',trails:5,icon:'🏖️',desc:'Bout du monde martiniquais, plages de sable noir et mangroves.'},
+  {name:'Grand-Rivière',zone:'nord',trails:3,icon:'🌿',desc:'Commune la plus au nord, accessibles uniquement par mer ou sentier.'},
+  {name:'Macouba',zone:'nord',trails:3,icon:'🌊',desc:'Falaises spectaculaires sur la côte atlantique nord.'},
+  {name:'Basse-Pointe',zone:'nord',trails:4,icon:'🌴',desc:'Plantations de bananes, vue sur les Pitons du Carbet.'},
+  {name:'Ajoupa-Bouillon',zone:'nord',trails:5,icon:'💧',desc:'Gorges de la Falaise, chutes d\'eau et forêt tropicale luxuriante.'},
+  {name:'Fonds-Saint-Denis',zone:'nord',trails:4,icon:'🏔️',desc:'Cœur de la forêt tropicale, sentiers vers les pitons.'},
+  {name:'Morne-Vert',zone:'nord',trails:3,icon:'🌱',desc:'Village perché dans les nuages, vue sur la côte caraïbe.'},
+  {name:'Bellefontaine',zone:'caraibe',trails:2,icon:'🎣',desc:'Village de pêcheurs authentique, côte sauvage sous le vent.'},
+  {name:'Case-Pilote',zone:'caraibe',trails:2,icon:'🐠',desc:'Eaux turquoise, récifs coralliens et fond marin préservé.'},
+  {name:'Schœlcher',zone:'caraibe',trails:3,icon:'🏙️',desc:'Entre Fort-de-France et les montagnes, plages populaires.'},
+  {name:'Fort-de-France',zone:'centre',trails:3,icon:'🏛️',desc:'Capitale de la Martinique, baie magnifique et fort Saint-Louis.'},
+  {name:'Saint-Joseph',zone:'centre',trails:5,icon:'🌲',desc:'Trace des Jésuites, forêt tropicale humide et biodiversité exceptionnelle.'},
+  {name:'Gros-Morne',zone:'centre',trails:4,icon:'🗻',desc:'Morne Pitault, entre nord et centre, panoramas sur les deux côtes.'},
+  {name:'Saint-Marie',zone:'atlantique',trails:5,icon:'🌸',desc:'Côte atlantique sauvage, musée du rhum, plages préservées.'},
+  {name:'Trinité',zone:'atlantique',trails:4,icon:'⛵',desc:'Presqu\'île de la Caravelle, réserve naturelle, château Dubuc.'},
+  {name:'Le Robert',zone:'atlantique',trails:3,icon:'🦞',desc:'Baie aux eaux cristallines, ilets et pêche traditionnelle.'},
+  {name:'Le François',zone:'atlantique',trails:4,icon:'🐡',desc:'Piscines naturelles, ilets du François, kitesurf.'},
+  {name:'Le Vauclin',zone:'atlantique',trails:3,icon:'🏄',desc:'Morne Vauclin, point culminant du Sud, vue 360°.'},
+  {name:'Le Marin',zone:'sud',trails:5,icon:'⚓',desc:'Capital de la voile, marina, départ vers les Grenadines.'},
+  {name:'Sainte-Anne',zone:'sud',trails:6,icon:'🏝️',desc:'Grande Anse des Salines, plus belle plage de Martinique.'},
+  {name:'Les Trois-Îlets',zone:'caraibe',trails:5,icon:'⛵',desc:'Village de la Poterie, maison de Joséphine, plages familiales.'},
+  {name:'Le Diamant',zone:'sud',trails:4,icon:'💎',desc:'Morne Larcher, Rocher du Diamant, vue sur Sainte-Lucie.'},
+  {name:'Rivière-Pilote',zone:'sud',trails:3,icon:'🌿',desc:'Musée des Arts et Traditions Populaires, campagne créole.'},
+  {name:'Rivière-Salée',zone:'centre',trails:3,icon:'🦀',desc:'Mangroves classées, kayak, biodiversité unique.'},
+  {name:'Ducos',zone:'centre',trails:2,icon:'🌾',desc:'Plaine agricole, entre mangroves et mornes verts.'},
+  {name:'Le Lamentin',zone:'centre',trails:3,icon:'✈️',desc:'Première ville de Martinique, zone économique dynamique.'},
+  {name:'Saint-Esprit',zone:'sud',trails:3,icon:'🌺',desc:'Cœur agricole du sud, traditions créoles préservées.'},
+  {name:'Sainte-Luce',zone:'sud',trails:4,icon:'🌊',desc:'Plages familiales, réserve sous-marine, fond marin préservé.'},
+  {name:'Le Carbet',zone:'caraibe',trails:4,icon:'🌴',desc:'Où Christophe Colomb a débarqué en 1502. Pitons du Carbet.'},
+  {name:'Le Lorrain',zone:'atlantique',trails:3,icon:'🌊',desc:'Vallée de la Lézarde, randonnées fluviales, cascades.'},
+  {name:'Sainte-Marie',zone:'atlantique',trails:4,icon:'🌸',desc:'Côte atlantique, distillerie Depaz, plantations historiques.'},
+  {name:'La Trinité',zone:'atlantique',trails:3,icon:'🏄',desc:'Hub touristique du nord-atlantique, accès Caravelle.'}
+];
+
+const randos = [
+  {id:1,name:'Montagne Pelée — Sommet',commune:'Le Morne-Rouge',diff:'difficile',duree:'5h30',dist:'12 km',deniv:'+1100m',tags:['nord','panorama'],color:'vert',icon:'🌋',
+   desc:'L\'ascension emblématique de la Martinique. Depuis le refuge de l\'Aileron, le sentier balisé traverse la forêt tropicale avant d\'atteindre la crête et le cratère. Vue à 360° sur toute l\'île par temps clair.',
+   tips:['Partez avant 7h du matin pour éviter les nuages','Emportez coupe-vent et imperméable','Sentier balisé rouge, ne quittez pas le chemin','Chaussures de randonnée indispensables']},
+  {id:2,name:'Trace des Jésuites',commune:'Saint-Joseph',diff:'moyen',duree:'3h',dist:'7 km',deniv:'+350m',tags:['centre','foret'],color:'rose',icon:'🌿',
+   desc:'Randonnée emblématique en forêt tropicale humide. Le sentier traverse une végétation luxuriante, des fougères arborescentes et offre des rencontres avec la faune endémique : anolis, colibris, oiseaux des bois.',
+   tips:['Bottes recommandées, terrain glissant','Apportez 2L d\'eau minimum','Moustiques présents, répulsif conseillé','Idéale en saison sèche']},
+  {id:3,name:'Presqu\'île de la Caravelle',commune:'Trinité',diff:'facile',duree:'2h',dist:'5 km',deniv:'+80m',tags:['atlantique','panorama'],color:'bleu',icon:'⛵',
+   desc:'Sentier côtier avec vues panoramiques sur l\'Atlantique. Le parcours longe des falaises spectaculaires avant d\'atteindre les ruines du château Dubuc (XVIIe siècle). Réserve naturelle préservée.',
+   tips:['Idéal en famille, accès libre','Chapeau et crème solaire indispensables','Jumelles conseillées pour observer les oiseaux','Parking gratuit à l\'entrée']},
+  {id:4,name:'Gorges de la Falaise',commune:'Ajoupa-Bouillon',diff:'moyen',duree:'2h30',dist:'4 km',deniv:'+120m',tags:['nord','foret'],color:'vert',icon:'💧',
+   desc:'Randonnée aquatique unique à travers des gorges spectaculaires. Le parcours remonte la rivière, traverse des vasques naturelles et aboutit à une magnifique cascade. Une expérience inoubliable en pleine nature.',
+   tips:['Maillot de bain obligatoire','Guide recommandé pour première visite','Chaussures aquatiques conseillées','Accès payant, réservation possible']},
+  {id:5,name:'Morne Larcher — Le Diamant',commune:'Le Diamant',diff:'difficile',duree:'4h',dist:'9 km',deniv:'+600m',tags:['sud','panorama'],color:'or',icon:'💎',
+   desc:'Vue époustouflante sur le Rocher du Diamant, la mer des Caraïbes et par temps clair, l\'île de Sainte-Lucie. Ascension exigeante mais récompensée par un panorama exceptionnel du sud martiniquais.',
+   tips:['Partez très tôt (avant 6h30)','Sentier escarpé et glissant par temps humide','Vue sur Sainte-Lucie par temps clair','Emportez pique-nique et eau']},
+  {id:6,name:'Côte sous le Vent — Bellefontaine',commune:'Bellefontaine',diff:'facile',duree:'1h30',dist:'3 km',deniv:'+40m',tags:['caraibe','panorama'],color:'bleu',icon:'🎣',
+   desc:'Balade côtière entre falaises volcaniques et mer des Caraïbes turquoise. Traversée du village de pêcheurs authentique avec ses barques colorées. Coucher de soleil spectaculaire.',
+   tips:['Idéal au coucher du soleil','Accès facile depuis la route nationale','Opportunité photo exceptionnelle','Village de pêcheurs authentique à explorer']},
+  {id:7,name:'Sentier des Volcans — Fonds-Saint-Denis',commune:'Fonds-Saint-Denis',diff:'difficile',duree:'6h',dist:'14 km',deniv:'+850m',tags:['nord','foret'],color:'vert',icon:'🏔️',
+   desc:'Grande traversée de la forêt tropicale sur les contreforts du volcan. Biodiversité exceptionnelle, orchidées sauvages et fougères géantes. Sentier peu fréquenté pour les randonneurs expérimentés.',
+   tips:['Guide fortement conseillé','Bottes imperméables indispensables','Flora rarissime et fragile','Prévenez quelqu\'un de votre itinéraire']},
+  {id:8,name:'Grande Anse des Salines',commune:'Sainte-Anne',diff:'facile',duree:'1h',dist:'2,5 km',deniv:'+15m',tags:['sud','panorama'],color:'rose',icon:'🏝️',
+   desc:'Balade entre les plus belles plages du sud martiniquais. Grande Anse des Salines, classée parmi les plus belles plages des Caraïbes, et les salines naturelles en toile de fond. Idéal pour familles.',
+   tips:['Parfait pour les familles avec enfants','Plagiste sur place, location de matériel','Snorkeling possible dans les eaux claires','Arrivez tôt le matin en haute saison']},
+  {id:9,name:'Trace de la Montagne du Vauclin',commune:'Le Vauclin',diff:'moyen',duree:'3h',dist:'6 km',deniv:'+400m',tags:['atlantique','panorama'],color:'violet',icon:'🏄',
+   desc:'Le point culminant du sud martiniquais offre une vue unique sur la côte atlantique, les ilets et par temps clair, les îles voisines. Sentier à travers la forêt sèche tropicale.',
+   tips:['Vue exceptionnelle par temps clair','Végétation de forêt sèche unique','Sentier balisé, départ depuis le bourg','Emportez de l\'eau, peu d\'ombre']},
+  {id:10,name:'Pitons du Carbet — Côté Forêt',commune:'Le Carbet',diff:'difficile',duree:'5h',dist:'10 km',deniv:'+700m',tags:['nord','foret','panorama'],color:'vert',icon:'🌴',
+   desc:'Les cinq pitons du Carbet dominent le centre de la Martinique. Ce sentier en forêt tropicale dense offre des vues remarquables depuis les crêtes. Faune et flore exceptionnelles.',
+   tips:['Réservé aux randonneurs expérimentés','Guide très recommandé','Forêt nuageuse au-dessus de 900m','Chaussures imperméables obligatoires']},
+];
+
+const panoramas = [
+  {name:'Sommet Montagne Pelée',altitude:'1397 m',desc:'Vue 360° sur toute la Martinique et les îles voisines',color:'p1',icon:'🌋',detail:'Point culminant de la Martinique. Par temps clair, on aperçoit la Dominique au nord et Sainte-Lucie au sud.'},
+  {name:'Morne Larcher',altitude:'477 m',desc:'Rocher du Diamant, mer des Caraïbes et Sainte-Lucie',color:'p2',icon:'💎',detail:'Panorama exceptionnel sur le sud de l\'île. Le Rocher du Diamant, ancien navire anglais selon la légende, se découpe sur la mer.'},
+  {name:'Pitons du Carbet',altitude:'1196 m',desc:'Cœur de la forêt tropicale et baie de Fort-de-France',color:'p3',icon:'🌿',detail:'Cinq pitons volcaniques au cœur de l\'île. Vue imprenable sur les deux côtes de la Martinique par temps clair.'},
+  {name:'Presqu\'île de la Caravelle',altitude:'150 m',desc:'Côte atlantique sauvage et ilets de la Trinité',color:'p4',icon:'⛵',detail:'Réserve naturelle préservée avec vue sur les fonds bleus de l\'Atlantique. Château Dubuc du XVIIe siècle à proximité.'},
+  {name:'Morne Jacob',altitude:'884 m',desc:'Vue panoramique sur la baie de Fort-de-France',color:'p5',icon:'🏙️',detail:'Le géant des mornes du centre. Vue sur la baie de Fort-de-France d\'un côté, et la côte atlantique de l\'autre.'},
+  {name:'Cap Macré — Le Vauclin',altitude:'280 m',desc:'Falaises et mer turquoise de la côte atlantique',color:'p6',icon:'🦅',detail:'Falaises volcaniques plongeant dans l\'Atlantique. Les vents alizés rendent ce spot inoubliable, idéal pour l\'observation des oiseaux.'},
+];
+
+const meteos = [
+  {ville:'Montagne Pelée',temp:'18°C',icon:'🌧️',desc:'Nuageux, brumeux',vent:'35 km/h',hum:'95%'},
+  {ville:'Fort-de-France',temp:'29°C',icon:'⛅',desc:'Partiellement nuageux',vent:'15 km/h',hum:'72%'},
+  {ville:'Le Diamant',temp:'28°C',icon:'☀️',desc:'Ensoleillé',vent:'20 km/h',hum:'68%'},
+  {ville:'Sainte-Anne',temp:'30°C',icon:'☀️',desc:'Beau temps, alizés',vent:'18 km/h',hum:'65%'},
+  {ville:'Saint-Pierre',temp:'27°C',icon:'🌤️',desc:'Légères averses possibles',vent:'12 km/h',hum:'80%'},
+  {ville:'Presqu\'île Caravelle',temp:'28°C',icon:'⛅',desc:'Alizés frais, éclaircies',vent:'28 km/h',hum:'74%'},
+];
+
+const ressources = [
+  {icon:'🥾',name:'Randonnée Martinique',desc:'Site officiel des randonnées pédestres en Martinique. Fiches techniques détaillées, cartes GPX téléchargeables, niveaux de difficulté, conditions des sentiers.',url:'https://www.randonnee-martinique.com',label:'Visiter le site'},
+  {icon:'🌿',name:'Parc Naturel Régional',desc:'Office du Parc Naturel Régional de la Martinique. Gestion et entretien des sentiers balisés, informations sur la biodiversité, faune et flore endémiques protégées.',url:'https://www.pnr-martinique.com',label:'Découvrir le PNR'},
+  {icon:'📍',name:'Komoot Martinique',desc:'Communauté internationale de randonneurs. Traces GPS vérifiées par la communauté, avis authentiques et photos récentes sur tous les sentiers de Martinique.',url:'https://www.komoot.com',label:'Explorer sur Komoot'},
+  {icon:'🗺️',name:'IGN Géoportail',desc:'Cartes topographiques officielles de la Martinique à différentes échelles. Courbes de niveau précises, sentiers balisés, altitudes, planification d\'itinéraires.',url:'https://www.geoportail.gouv.fr',label:'Voir les cartes IGN'},
+  {icon:'🌤️',name:'Météo France Antilles',desc:'Prévisions météo spécialisées pour les Antilles françaises. Bulletins montagne, alertes cycloniques, conditions météo pour la randonnée, modèles haute résolution.',url:'https://meteofrance.com',label:'Consulter la météo'},
+  {icon:'🏝️',name:'Martinique Tourisme',desc:'Comité Martiniquais du Tourisme. Guide officiel des activités outdoor, randonnées organisées, guides agréés, hébergements et circuits thématiques.',url:'https://www.martinique.org',label:'Guide officiel'},
+  {icon:'📱',name:'AllTrails Martinique',desc:'Application mobile leader mondial pour randonneurs. Plus de 60 sentiers répertoriés en Martinique, navigation GPS hors ligne, communauté active, photos récentes.',url:'https://www.alltrails.com',label:'Télécharger AllTrails'},
+  {icon:'🦜',name:'AOMA — Ornithologie',desc:'Association Ornithologique de la Martinique. Observer les oiseaux endémiques pendant vos randonnées : moqueur des savanes, colibri madère, perdrix à travers sentiers.',url:'https://aoma-martinique.com',label:'Observer les oiseaux'},
+];
+
+/* ── LANGUAGE ── */
+function setLangSplash(l, btn){
+  currentLang = l;
+  document.querySelectorAll('.splash-lang button').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  const texts = {fr:'Commencer l\'exploration →', en:'Start exploring →', cr:'Koumansé eksplore →'};
+  document.getElementById('splash-btn-text').textContent = texts[l];
+}
+
+function setLangApp(l, btn){
+  currentLang = l;
+  document.querySelectorAll('.lang-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  applyTranslations();
+  renderAll();
+}
+
+function applyTranslations(){
+  document.querySelectorAll('[data-'+currentLang+']').forEach(el=>{
+    const val = el.dataset[currentLang];
+    if(val) el.textContent = val;
+  });
+}
+
+/* ── APP ENTER ── */
+function enterApp(){
+  const splash = document.getElementById('splash');
+  splash.classList.add('hide');
+  document.getElementById('main-nav').style.display = 'flex';
+  document.getElementById('main-footer').style.display = 'block';
+  document.getElementById('accueil').style.display = 'block';
+  setTimeout(()=>{splash.style.display='none'}, 950);
+  renderAll();
+  applyTranslations();
+}
+
+/* ── NAVIGATION ── */
+function showSection(id, btn){
+  document.querySelectorAll('.section').forEach(s=>s.style.display='none');
+  const sec = document.getElementById(id);
+  if(sec) sec.style.display = 'block';
+  document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
+  if(btn) btn.classList.add('active');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+/* ── RENDER COMMUNES ── */
+function renderCommunes(){
+  const grid = document.getElementById('communes-grid');
+  if(!grid) return;
+  const zoneLabels = {
+    fr:{nord:'Nord',sud:'Sud',centre:'Centre',caraibe:'Caraïbe',atlantique:'Atlantique',trails:'randonnée(s)'},
+    en:{nord:'North',sud:'South',centre:'Center',caraibe:'Caribbean',atlantique:'Atlantic',trails:'trail(s)'},
+    cr:{nord:'Nò',sud:'Sid',centre:'Sant',caraibe:'Karayib',atlantique:'Atlantik',trails:'randonnée(s)'}
+  };
+  const l = zoneLabels[currentLang] || zoneLabels.fr;
+  grid.innerHTML = communes.map(c=>`
+    <div class="commune-card ${c.zone}" onclick="showCommuneModal('${c.name.replace(/'/g,"\\'")}','${c.zone}','${c.icon}')">
+      <div class="commune-icon">${c.icon}</div>
+      <div class="commune-name">${c.name}</div>
+      <div class="commune-zone">${l[c.zone]||c.zone}</div>
+      <div class="commune-trails">🥾 ${c.trails} ${l.trails}</div>
+    </div>`).join('');
+}
+
+/* ── RENDER RANDOS ── */
+function renderRandos(filter='tout'){
+  const grid = document.getElementById('rando-grid');
+  if(!grid) return;
+  const diffLabels = {
+    fr:{facile:'Facile',moyen:'Moyen',difficile:'Difficile'},
+    en:{facile:'Easy',moyen:'Moderate',difficile:'Hard'},
+    cr:{facile:'Fasil',moyen:'Mwayen',difficile:'Difisil'}
+  };
+  const d = diffLabels[currentLang] || diffLabels.fr;
+  let filtered = filter==='tout' ? randos : randos.filter(r=>r.diff===filter||r.tags.includes(filter));
+  if(!filtered.length){
+    grid.innerHTML = '<p style="color:var(--texte-muted);font-size:15px;grid-column:1/-1;padding:40px 0;text-align:center">🌺 Aucune randonnée pour ce filtre.</p>';
+    return;
+  }
+  grid.innerHTML = filtered.map(r=>`
+    <div class="rando-card" onclick="showRandoModal(${r.id})">
+      <div class="rando-img ${r.color}"><span style="font-size:56px;position:relative;z-index:1">${r.icon}</span></div>
+      <div class="rando-body">
+        <span class="rando-diff diff-${r.diff}">${d[r.diff]}</span>
+        <div class="rando-name">${r.name}</div>
+        <div class="rando-commune">📍 ${r.commune}</div>
+        <div class="rando-meta">
+          <span>⏱ ${r.duree}</span>
+          <span>📏 ${r.dist}</span>
+          <span>⛰ ${r.deniv}</span>
+        </div>
+      </div>
+    </div>`).join('');
+}
+
+/* ── RENDER PANORAMAS ── */
+function renderPanoramas(){
+  const grid = document.getElementById('pano-grid');
+  if(!grid) return;
+  grid.innerHTML = panoramas.map(p=>`
+    <div class="pano-card" onclick="showPanoModal('${p.name.replace(/'/g,"\\'")}')">
+      <div class="pano-bg ${p.color}">${p.icon}</div>
+      <div class="pano-overlay"></div>
+      <div class="pano-info">
+        <div class="pano-name">${p.name}</div>
+        <div class="pano-altitude">⛰ ${p.altitude} · ${p.desc}</div>
+      </div>
+    </div>`).join('');
+}
+
+/* ── RENDER MÉTÉO ── */
+function renderMeteo(){
+  const grid = document.getElementById('meteo-grid');
+  if(!grid) return;
+  grid.innerHTML = meteos.map(m=>`
+    <div class="meteo-card">
+      <div class="meteo-icon">${m.icon}</div>
+      <div class="meteo-ville">${m.ville}</div>
+      <div class="meteo-temp">${m.temp}</div>
+      <div class="meteo-desc">${m.desc}</div>
+      <div class="meteo-details">
+        <span>💨 ${m.vent}</span>
+        <span>💧 ${m.hum}</span>
+      </div>
+    </div>`).join('');
+}
+
+/* ── RENDER RESSOURCES ── */
+function renderRessources(){
+  const grid = document.getElementById('ressources-grid');
+  if(!grid) return;
+  const visitLabel = {fr:'Visiter →',en:'Visit →',cr:'Vizité →'};
+  grid.innerHTML = ressources.map(r=>`
+    <div class="res-card">
+      <div class="res-icon">${r.icon}</div>
+      <div class="res-name">${r.name}</div>
+      <div class="res-desc">${r.desc}</div>
+      <a class="res-link" href="${r.url}" target="_blank" rel="noopener">
+        ${visitLabel[currentLang]||visitLabel.fr} ${r.label}
+      </a>
+    </div>`).join('');
+}
+
+function renderAll(){
+  renderCommunes();
+  renderRandos();
+  renderPanoramas();
+  renderMeteo();
+  renderRessources();
+}
+
+/* ── FILTRES ── */
+function filterRando(f, btn){
+  document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  renderRandos(f);
+}
+
+/* ── MODALS ── */
+function showCommuneModal(name, zone, icon){
+  const c = communes.find(c=>c.name===name);
+  if(!c) return;
+  const zoneColors = {nord:'#2d8a42',sud:'#d4547a',centre:'#c9963a',caraibe:'#3b82c4',atlantique:'#7c4bab'};
+  const zoneNames = {fr:{nord:'Nord',sud:'Sud',centre:'Centre',caraibe:'Caraïbe',atlantique:'Atlantique'},en:{nord:'North',sud:'South',centre:'Center',caraibe:'Caribbean',atlantique:'Atlantic'},cr:{nord:'Nò',sud:'Sid',centre:'Sant',caraibe:'Karayib',atlantique:'Atlantik'}};
+  const zl = zoneNames[currentLang]||zoneNames.fr;
+  document.getElementById('modal-content').innerHTML = `
+    <div class="modal-icon">${icon}</div>
+    <div class="modal-title">${name}</div>
+    <div class="modal-commune">
+      <span style="background:${zoneColors[zone]};color:#fff;padding:3px 10px;border-radius:12px;font-size:12px;font-weight:500">${zl[zone]}</span>
+      · Martinique 972
+    </div>
+    <div class="modal-info">
+      <div class="modal-info-item"><div class="val">${c.trails}</div><div class="lbl">Randonnées</div></div>
+      <div class="modal-info-item"><div class="val">972</div><div class="lbl">Département</div></div>
+    </div>
+    <div class="modal-desc">${c.desc}</div>
+    <div class="modal-tips">
+      <div class="modal-tips-title">Points d'intérêt</div>
+      <ul>
+        <li>Sentiers balisés et entretenus toute l'année</li>
+        <li>Faune et flore tropicales endémiques</li>
+        <li>Culture et traditions créoles authentiques</li>
+      </ul>
+    </div>`;
+  document.getElementById('modal-overlay').classList.add('open');
+}
+
+function showRandoModal(id){
+  const r = randos.find(r=>r.id===id);
+  if(!r) return;
+  const diffColors = {facile:'#1a5c2a',moyen:'#8a6020',difficile:'#8b2043'};
+  const diffBg = {facile:'#e8f5eb',moyen:'#fff8e6',difficile:'#fde8ee'};
+  const diffL = {fr:{facile:'Facile',moyen:'Moyen',difficile:'Difficile'},en:{facile:'Easy',moyen:'Moderate',difficile:'Hard'},cr:{facile:'Fasil',moyen:'Mwayen',difficile:'Difisil'}};
+  const d = (diffL[currentLang]||diffL.fr)[r.diff];
+  document.getElementById('modal-content').innerHTML = `
+    <div class="modal-icon">${r.icon}</div>
+    <div class="modal-title">${r.name}</div>
+    <div class="modal-commune">
+      📍 ${r.commune} ·
+      <span style="background:${diffBg[r.diff]};color:${diffColors[r.diff]};padding:3px 10px;border-radius:12px;font-size:12px;font-weight:600">${d}</span>
+    </div>
+    <div class="modal-info">
+      <div class="modal-info-item"><div class="val">${r.duree}</div><div class="lbl">Durée</div></div>
+      <div class="modal-info-item"><div class="val">${r.dist}</div><div class="lbl">Distance</div></div>
+      <div class="modal-info-item"><div class="val">${r.deniv}</div><div class="lbl">Dénivelé</div></div>
+      <div class="modal-info-item"><div class="val">${r.tags.map(t=>'#'+t).join(' ')}</div><div class="lbl">Thèmes</div></div>
+    </div>
+    <div class="modal-desc">${r.desc}</div>
+    <div class="modal-tips">
+      <div class="modal-tips-title">Conseils pratiques</div>
+      <ul>${r.tips.map(t=>`<li>${t}</li>`).join('')}</ul>
+    </div>`;
+  document.getElementById('modal-overlay').classList.add('open');
+}
+
+function showPanoModal(name){
+  const p = panoramas.find(p=>p.name===name);
+  if(!p) return;
+  document.getElementById('modal-content').innerHTML = `
+    <div class="modal-icon">${p.icon}</div>
+    <div class="modal-title">${p.name}</div>
+    <div class="modal-commune">⛰ Altitude : ${p.altitude}</div>
+    <div class="modal-info">
+      <div class="modal-info-item" style="grid-column:1/-1"><div class="val">${p.desc}</div><div class="lbl">Description</div></div>
+    </div>
+    <div class="modal-desc">${p.detail}</div>
+    <div class="modal-tips">
+      <div class="modal-tips-title">Comment y accéder</div>
+      <ul>
+        <li>Vérifiez la météo avant de partir</li>
+        <li>Partez tôt pour éviter les nuages</li>
+        <li>Emportez un appareil photo</li>
+      </ul>
+    </div>`;
+  document.getElementById('modal-overlay').classList.add('open');
+}
+
+function closeModal(e){
+  if(!e || e.target===document.getElementById('modal-overlay')){
+    document.getElementById('modal-overlay').classList.remove('open');
+  }
+}
+
+document.addEventListener('keydown', e=>{ if(e.key==='Escape') closeModal(); });
+</script>
+</body>
+</html>
